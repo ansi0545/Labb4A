@@ -56,13 +56,13 @@ loadFacts();
 
 async function loadFacts() {
   const res = await fetch(
-    "https://hwtkikrqvnsrrpkjrytv.supabase.co/rest/v1/facts",
+    "https://onjtdythuvikjtokjdnr.supabase.co/rest/v1/facts",
     {
       headers: {
         apikey:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3dGtpa3Jxdm5zcnJwa2pyeXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg3NTk3ODUsImV4cCI6MTk4NDMzNTc4NX0.l_PGJRds8Lmg17Pn7eqNwFqYWH4rST2gVlTeGCfKTjk",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uanRkeXRodXZpa2p0b2tqZG5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI1MTU2NzAsImV4cCI6MjAyODA5MTY3MH0.yB2qsercPylMR9wlV-Gr61tgw_MtWlJ6L0eFvxlA0lc",
         authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3dGtpa3Jxdm5zcnJwa2pyeXR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2Njg3NTk3ODUsImV4cCI6MTk4NDMzNTc4NX0.l_PGJRds8Lmg17Pn7eqNwFqYWH4rST2gVlTeGCfKTjk",
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9uanRkeXRodXZpa2p0b2tqZG5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI1MTU2NzAsImV4cCI6MjAyODA5MTY3MH0.yB2qsercPylMR9wlV-Gr61tgw_MtWlJ6L0eFvxlA0lc",
       },
     }
   );
@@ -99,10 +99,10 @@ function createFactsList(dataArray) {
 btn.addEventListener("click", function () {
   if (form.classList.contains("hidden")) {
     form.classList.remove("hidden");
-    btn.textContent = "Close";
+    btn.textContent = "Stäng";
   } else {
     form.classList.add("hidden");
-    btn.textContent = "Share a fact";
+    btn.textContent = "Dela fakta";
   }
 });
 
