@@ -1,25 +1,18 @@
 <?php
-require_once('db_credentials.php');
+define("DB_SERVER", "127.0.0.1");
+define("DB_USER", "root");
+define("DB_PASS", "");
+define("DB_NAME", "vovvebloggen");
 
-// Establish connection to the database
 $connection = mysqli_connect(DB_SERVER, DB_USER, DB_PASS, DB_NAME);
 
 function add_user($username, $password)
 {
     global $connection;
-
-    // Create SQL query
     $sql = 'INSERT INTO user (username, password) VALUES (?,?)';
-    // Prepare the query
     $statement = mysqli_prepare($connection, $sql);
-
-    // Bind parameters
     mysqli_stmt_bind_param($statement, "ss", $username, $password);
-
-    // Execute the query
     mysqli_stmt_execute($statement);
-
-    // Close the statement
     mysqli_stmt_close($statement);
 }
 
@@ -35,17 +28,6 @@ function get_result($statement)
     return $rows;
 }
 
-function get_users()
-{
-    global $connection;
-    $sql = 'SELECT * FROM user';
-    $statement = mysqli_prepare($connection, $sql);
-    mysqli_stmt_execute($statement);
-    $result = get_result($statement);
-    mysqli_stmt_close($statement);
-    return $result;
-}
-
 function get_user($username)
 {
     global $connection;
@@ -58,28 +40,32 @@ function get_user($username)
     return $result;
 }
 
-function get_password($id)
-{
+function get_user_by_id($user_id) {
     global $connection;
-    $sql = 'SELECT password FROM user WHERE id=?';
+    $sql = 'SELECT * FROM user WHERE id=?';
     $statement = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($statement, "i", $id);
+    mysqli_stmt_bind_param($statement, "i", $user_id);
     mysqli_stmt_execute($statement);
     $result = get_result($statement);
     mysqli_stmt_close($statement);
     return $result;
 }
 
-function get_images($id)
-{
+function update_user_profile($user_id, $username, $email, $new_password = null) {
     global $connection;
-    $sql = 'SELECT filename, description FROM image WHERE postId=?';
-    $statement = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($statement, "i", $id);
-    mysqli_stmt_execute($statement);
-    $result = get_result($statement);
-    mysqli_stmt_close($statement);
-    return $result;
+    // Update user's profile information and password if provided
+}
+
+function upload_profile_picture($user_id, $file) {
+    // Upload user's profile picture to the server and save the filename in the database
+}
+
+function request_password_reset($email) {
+    // Send email with password reset link to the user's email address
+}
+
+function reset_password($email, $reset_code, $new_password) {
+    // Reset user's password in the database
 }
 
 function change_avatar($filename, $id)
