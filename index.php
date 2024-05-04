@@ -1,60 +1,53 @@
+<?php
+require_once('backend/db.php');
+
+session_start();
+
+if (isset($_POST['submit'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $users = get_user($username);
+    if (!empty($users)) {
+        $user = $users[0];
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            header("Location: dashboard.php");
+            exit;
+        } else {
+            $login_error = "Invalid username or password.";
+        }
+    } else {
+        $login_error = "User not found.";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@400;600&display=swap" rel="stylesheet" />
-
-  <link href="style.css" rel="stylesheet" />
-  <title>Vovvebloggen</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <!-- header content -->
-        </header>
-
-        <!-- Welcome page -->
-        <main class="welcome-page">
-            <!-- News section -->
-            <section class="news">
-                <!-- News items -->
-            </section>
-
-            <!-- Bloggers list -->
-            <section class="bloggers-list">
-                <!-- Bloggers -->
-            </section>
-        </main>
-
-        <!-- Blog page -->
-        <main class="blog-page">
-            <!-- Selected or latest post -->
-            <section class="post">
-                <!-- Post content -->
-            </section>
-
-            <!-- Blog's posts list -->
-            <section class="posts-list">
-                <!-- Posts -->
-            </section>
-
-            <!-- Blog/Blogger info -->
-            <section class="blog-info">
-                <!-- Info content -->
-            </section>
-        </main>
-
-        <!-- Login/Register feature -->
-        <section class="auth">
-            <!-- Login/Register form -->
-        </section>
+    <div class="login-container">
+        <h2>Login</h2>
+        <?php if (isset($login_error)) echo "<p class='error'>$login_error</p>"; ?>
+        <form action="index.php" method="post">
+            <div class="input-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="input-group">
+                <button type="submit" name="submit">Login</button>
+            </div>
+        </form>
+        <p>Don't have an account? <a href="register.php">Register here</a></p>
     </div>
-
-    
 </body>
 </html>
