@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@400;600&display=swap" rel="stylesheet" />
 
   <link href="style.css" rel="stylesheet" />
-  <title>Faktabloggen</title>
+  <title>Vovvebloggen</title>
 </head>
 <body>
     <div class="container">
