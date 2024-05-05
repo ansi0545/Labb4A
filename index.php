@@ -1,16 +1,20 @@
 <?php
-//require_once('backend/db.php');
-//require_once('./frontend/register.php');
+require_once('backend/db.php');
+
+require_once('frontend/dashboard.php');
+
 
 session_start();
 
-if (isset($_POST['submit'])) {
-    $password = $_POST['password'];
-    get_user($password);
 
-    $users = get_user($username);
-    if (!empty($users)) {
-        $user = $users[0];
+
+if (isset($_POST['submit'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $user = get_user($username);
+    
+    if ($user) {
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             header("Location: dashboard.php");
@@ -23,6 +27,7 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +35,7 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-
+    <link rel="stylesheet" href="frontend/style.css">
 </head>
 
 <body>

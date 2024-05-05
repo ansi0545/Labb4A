@@ -1,7 +1,8 @@
 <?php
-include('../backend/db_credentials.php');
-require_once('../backend/user_functions.php');
-session_start();
+include(__DIR__ . '/../backend/db_credentials.php');
+require_once(__DIR__ . '/../backend/db.php');
+
+
 
 // Check if the user is logged in, otherwise redirect to the login page
 if (!isset($_SESSION['user_id'])) {
@@ -20,14 +21,21 @@ if (!$user) {
     header("Location: login.php");
     exit;
 }
+
+// Check if the 'username' key is set in the $user array
+if (!isset($user['username'])) {
+    $user['username'] = 'Guest';
+}
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Dashboard</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
     <div class="dashboard">
         <h1>Welcome back, <?php echo $user['username']; ?>!</h1>
@@ -37,4 +45,5 @@ if (!$user) {
         <a href="logout.php">Logout</a>
     </div>
 </body>
+
 </html>

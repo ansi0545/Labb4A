@@ -1,6 +1,6 @@
 <?php
 require_once('../backend/db.php');
-require_once('../backend/user_functions.php');
+
 
 session_start();
 

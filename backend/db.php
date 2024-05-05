@@ -1,8 +1,8 @@
 <?php
-require_once(__DIR__ . '/db_credentials.php');
+require_once('db_credentials.php');
 $connection = mysqli_connect('127.0.0.1', 'root', '', 'vovvebloggen');
 
-function get_user($username) {
+function get_users($username) {
     global $connection;
     $statement = mysqli_prepare($connection, 'SELECT * FROM user WHERE username=?');
     mysqli_stmt_bind_param($statement, "s", $username);
@@ -12,6 +12,22 @@ function get_user($username) {
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
+function get_user($username) {
+    global $connection; // Assuming $conn is your database connection
+
+    $query = "SELECT * FROM user WHERE username = ?";
+    $stmt = $connection->prepare($query);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        return $result->fetch_assoc(); // This will return the first user in the result set
+    } else {
+        return false;
+    }
+}
+
 function add_user($username, $password) {
     global $connection;
     $password = password_hash($password, PASSWORD_DEFAULT);
@@ -19,6 +35,19 @@ function add_user($username, $password) {
     mysqli_stmt_bind_param($statement, "ss", $username, $password);
     mysqli_stmt_execute($statement);
     mysqli_stmt_close($statement);
+}
+
+// Funktion för att hämta användarinformation baserat på användar-ID
+function get_user_by_id($user_id)
+{
+    global $connection;
+    $sql = 'SELECT * FROM user WHERE id=?';
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, "i", $user_id);
+    mysqli_stmt_execute($statement);
+    $result = get_result($statement);
+    mysqli_stmt_close($statement);
+    return $result;
 }
 
 function change_avatar($avatar, $user_id) {
@@ -79,5 +108,16 @@ function reset_password($email, $reset_code, $new_password) {
     } else {
         // TODO: Handle the error case where the reset code is incorrect
     }
+}
+function get_result($statement)
+{
+    $rows = array();
+    $result = mysqli_stmt_get_result($statement);
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+    }
+    return $rows;
 }
 ?>

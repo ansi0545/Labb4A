@@ -1,6 +1,7 @@
 <?php
 require_once('../backend/db.php');
 
+
 session_start();
 
 if (isset($_POST['submit'])) {

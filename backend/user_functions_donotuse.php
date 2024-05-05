@@ -8,7 +8,7 @@ function add_user($username, $password)
 {
     global $connection;
 
-    // Hash the password
+ 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     // Create SQL query
