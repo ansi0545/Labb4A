@@ -1,11 +1,12 @@
 <?php
-require_once('backend/db.php');
+//require_once('backend/db.php');
+require_once('./frontend/register.php');
 
 session_start();
 
 if (isset($_POST['submit'])) {
-    $username = $_POST['username'];
     $password = $_POST['password'];
+    get_user($password);
 
     $users = get_user($username);
     if (!empty($users)) {
@@ -24,12 +25,14 @@ if (isset($_POST['submit'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="styles.css">
+
 </head>
+
 <body>
     <div class="login-container">
         <h2>Login</h2>
@@ -47,7 +50,8 @@ if (isset($_POST['submit'])) {
                 <button type="submit" name="submit">Login</button>
             </div>
         </form>
-        <p>Don't have an account? <a href="register.php">Register here</a></p>
+        <p>Don't have an account? <a href="frontend/register.php">Register here</a></p>
     </div>
 </body>
+
 </html>

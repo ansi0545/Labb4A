@@ -19,6 +19,35 @@ if (!$user) {
     header("Location: login.php");
     exit;
 }
+<?php
+// Funktion för att hämta en användare med ett specifikt id
+function get_user_by_id($id)
+{
+    global $connection;
+
+    // Create SQL query
+    $sql = 'SELECT * FROM user WHERE id = ?';
+    // Prepare the query
+    $statement = mysqli_prepare($connection, $sql);
+
+    // Bind parameters
+    mysqli_stmt_bind_param($statement, "i", $id);
+
+    // Execute the query
+    mysqli_stmt_execute($statement);
+
+    // Get the result
+    $result = mysqli_stmt_get_result($statement);
+
+    // Fetch the user
+    $user = mysqli_fetch_assoc($result);
+
+    // Close the statement
+    mysqli_stmt_close($statement);
+
+    return $user;
+}
+?>
 
 // Här kan du välja vad du vill visa på användarens dashboard baserat på deras information
 

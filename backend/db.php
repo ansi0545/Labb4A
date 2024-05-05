@@ -1,4 +1,5 @@
 <?php
+require_once(__DIR__ . '/db_credentials.php');
 $connection = mysqli_connect('127.0.0.1', 'root', '', 'vovvebloggen');
 
 function get_user($username) {
@@ -11,11 +12,11 @@ function get_user($username) {
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-function add_user($username, $password, $email) {
+function add_user($username, $password) {
     global $connection;
     $password = password_hash($password, PASSWORD_DEFAULT);
-    $statement = mysqli_prepare($connection, 'INSERT INTO user (username, password, email) VALUES (?, ?, ?)');
-    mysqli_stmt_bind_param($statement, "sss", $username, $password, $email);
+    $statement = mysqli_prepare($connection, 'INSERT INTO user (username, password) VALUES (?, ?)');
+    mysqli_stmt_bind_param($statement, "ss", $username, $password);
     mysqli_stmt_execute($statement);
     mysqli_stmt_close($statement);
 }

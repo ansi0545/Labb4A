@@ -8,13 +8,16 @@ function add_user($username, $password)
 {
     global $connection;
 
+    // Hash the password
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
     // Create SQL query
-    $sql = 'INSERT INTO user (username, password) VALUES (?,?)';
+    $sql = 'INSERT INTO user (username, password, email) VALUES (?,?,?)';
     // Prepare the query
     $statement = mysqli_prepare($connection, $sql);
 
     // Bind parameters
-    mysqli_stmt_bind_param($statement, "ss", $username, $password);
+    mysqli_stmt_bind_param($statement, "sss", $username, $hashed_password, $email);
 
     // Execute the query
     mysqli_stmt_execute($statement);
@@ -37,7 +40,8 @@ function get_user($username)
 }
 
 // Funktion för att hämta användarinformation baserat på användar-ID
-function get_user_by_id($user_id) {
+function get_user_by_id($user_id)
+{
     global $connection;
     $sql = 'SELECT * FROM user WHERE id=?';
     $statement = mysqli_prepare($connection, $sql);
@@ -49,23 +53,27 @@ function get_user_by_id($user_id) {
 }
 
 // Funktion för att uppdatera användarprofil
-function update_user_profile($user_id, $username, $email, $new_password = null) {
+function update_user_profile($user_id, $username, $email, $new_password = null)
+{
     global $connection;
     // Uppdatera användarens profilinformation och lösenord om det finns
 }
 
 // Funktion för att ladda upp användarprofilbild
-function upload_profile_picture($user_id, $file) {
+function upload_profile_picture($user_id, $file)
+{
     // Ladda upp användarens profilbild till servern och spara filnamnet i databasen
 }
 
 // Funktion för att generera en återställningskod och skicka en återställningslänk till användarens e-post
-function request_password_reset($email) {
+function request_password_reset($email)
+{
     // Skicka e-post med återställningslänk till användarens e-postadress
 }
 
 // Funktion för att återställa lösenordet med en giltig återställningskod
-function reset_password($email, $reset_code, $new_password) {
+function reset_password($email, $reset_code, $new_password)
+{
     // Återställ användarens lösenord i databasen
 }
 
@@ -74,11 +82,10 @@ function get_result($statement)
 {
     $rows = array();
     $result = mysqli_stmt_get_result($statement);
-    if($result) {
+    if ($result) {
         while ($row = mysqli_fetch_assoc($result)) {
             $rows[] = $row;
         }
     }
     return $rows;
 }
-?>
