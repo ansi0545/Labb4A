@@ -28,7 +28,12 @@ if (isset($_POST['submit'])) {
 <body>
     <div class="register-container">
         <h2>Register</h2>
-        <form action="frontend/register.php" method="post">
+        <?php
+        if (isset($register_error)) {
+            echo "<p class='error'>$register_error</p>";
+        }
+        ?>
+        <form action="register.php" method="post">
             <div class="input-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -41,9 +46,8 @@ if (isset($_POST['submit'])) {
                 <button type="submit" name="submit">Register</button>
             </div>
         </form>
-        <p>Already have an account? <a href="frontend/login.php">Login here</a></p>
+        <p>Already have an account? <a href="login.php">Login here</a></p>
     </div>
 </body>
 
 </html>
-?>

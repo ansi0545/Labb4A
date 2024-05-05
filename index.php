@@ -1,6 +1,6 @@
 <?php
 //require_once('backend/db.php');
-require_once('./frontend/register.php');
+//require_once('./frontend/register.php');
 
 session_start();
 

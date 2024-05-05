@@ -1,5 +1,6 @@
 <?php
-require_once('backend/db.php');
+require_once('../backend/db.php');
+require_once('../backend/user_functions.php');
 
 session_start();
 
@@ -30,6 +31,7 @@ if (isset($_FILES['avatar'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Profile</title>
 
 </head>
