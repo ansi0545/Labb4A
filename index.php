@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once(__DIR__ . '/backend/db.php');
 
 
@@ -6,14 +7,14 @@ require_once(__DIR__ . '/frontend/dashboard.php');
 
 
 
-session_start();
+
 
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
     $user = get_user($username);
-    
+
     if ($user) {
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
@@ -40,7 +41,7 @@ if (isset($_POST['submit'])) {
 
 <body>
     <div class="login-container">
-        <h2>Login</h2>
+        <h2>Index</h2>
         <?php if (isset($login_error)) echo "<p class='error'>$login_error</p>"; ?>
         <form action="index.php" method="post">
             <div class="input-group">
@@ -55,7 +56,6 @@ if (isset($_POST['submit'])) {
                 <button type="submit" name="submit">Login</button>
             </div>
         </form>
-        <p>Don't have an account? <a href="register.php">Register here</a></p>
     </div>
 </body>
 
