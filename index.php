@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once(__DIR__ . '/backend/db.php');
+//require_once(__DIR__ . '/backend/db.php');
 
 
 require_once(__DIR__ . '/frontend/dashboard.php');
@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
     if ($user) {
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
-            header("Location: dashboard.php");
+            header("Location: frontend/dashboard.php");
             exit;
         } else {
             $login_error = "Invalid username or password.";
@@ -41,7 +41,7 @@ if (isset($_POST['submit'])) {
 
 <body>
     <div class="login-container">
-        <h2>Index</h2>
+        <h2>Login</h2>
         <?php if (isset($login_error)) echo "<p class='error'>$login_error</p>"; ?>
         <form action="index.php" method="post">
             <div class="input-group">

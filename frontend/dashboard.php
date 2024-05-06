@@ -1,4 +1,8 @@
 <?php
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 include(__DIR__ . '/../backend/db_credentials.php');
 require_once(__DIR__ . '/../backend/db.php');
 
@@ -6,7 +10,7 @@ require_once(__DIR__ . '/../backend/db.php');
 
 // Check if the user is logged in, otherwise redirect to the login page
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    //header("Location: login.php");
     exit;
 }
 
@@ -18,7 +22,7 @@ $user = get_user_by_id($user_id);
 if (!$user) {
     // Display an error message and log out the user
     session_destroy();
-    header("Location: login.php");
+    //header("Location: login.php");
     exit;
 }
 
