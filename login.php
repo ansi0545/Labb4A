@@ -1,19 +1,20 @@
 <?php
-require_once('../backend/db.php');
+require_once(__DIR__ . '/backend/db.php');
 
 
-session_start();
+//session_start();
+
 
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $users = get_user($username);
-    if (!empty($users)) {
-        $user = $users[0];
+    $user = get_user($username); // Change here
+
+    if (!empty($user)) { // Change here
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
-            header("Location: dashboard.php");
+            header("Location: frontend/dashboard.php");
             exit;
         } else {
             $login_error = "Invalid username or password.";
