@@ -1,8 +1,12 @@
 <?php
 
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+echo 'Session started';
+
+
 include(__DIR__ . '/../backend/db_credentials.php');
 require_once(__DIR__ . '/../backend/db.php');
 
@@ -10,13 +14,15 @@ require_once(__DIR__ . '/../backend/db.php');
 
 // Check if the user is logged in, otherwise redirect to the login page
 if (!isset($_SESSION['user_id'])) {
-    //header("Location: login.php");
+    header("Location: login.php");
     exit;
 }
 
 // Get user information from the session or the database based on the user ID
 $user_id = $_SESSION['user_id'];
 $user = get_user_by_id($user_id);
+$user = $user[0]; // Get the first user from the array
+var_dump($user);
 
 // If the user does not exist, you can display an error message and log them out
 if (!$user) {

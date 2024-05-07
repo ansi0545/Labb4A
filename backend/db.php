@@ -62,31 +62,50 @@ function change_avatar($avatar, $user_id)
     mysqli_stmt_close($statement);
 }
 
-function update_user_profile($user_id, $username, $new_password = null)
+
+function update_user_profile($user_id, $username, $email, $new_password = null)
 {
     global $connection;
     $sql = 'UPDATE user SET username=?, email=?';
-    $params = [$username];
+    $params = [$username, $email];
+    $types = 'ss'; // username and email are strings
+
     if ($new_password !== null) {
         $sql .= ', password=?';
         $params[] = password_hash($new_password, PASSWORD_DEFAULT);
+        $types .= 's'; // password is a string
     }
+
     $sql .= ' WHERE id=?';
     $params[] = $user_id;
+    $types .= 'i'; // id is an integer
+
     $statement = mysqli_prepare($connection, $sql);
-    mysqli_stmt_bind_param($statement, str_repeat('s', count($params)), ...$params);
+    mysqli_stmt_bind_param($statement, $types, ...$params);
     mysqli_stmt_execute($statement);
     mysqli_stmt_close($statement);
 }
 
+
 function upload_profile_picture($user_id, $file)
 {
-    // Assuming $file is an array with file info, as from $_FILES['fieldname']
-    $filename = $file['name'];
-    $filetmp = $file['tmp_name'];
-    $destination = "uploads/" . $filename;
-    move_uploaded_file($filetmp, $destination);
-    change_avatar($filename, $user_id);
+    $target_dir = "uploads/";
+
+    // Check if the directory exists
+    if (!file_exists($target_dir)) {
+        // If not, create the directory
+        mkdir($target_dir, 0777, true);
+    }
+
+    // Now proceed with moving the uploaded file
+    $target_file = $target_dir . basename($file["name"]);
+    if (move_uploaded_file($file["tmp_name"], $target_file)) {
+        // Update the user's avatar in the database
+        change_avatar($target_file, $user_id);
+        echo "The file " . basename($file["name"]) . " has been uploaded.";
+    } else {
+        echo "Sorry, there was an error uploading your file.";
+    }
 }
 
 function request_password_reset($email)
