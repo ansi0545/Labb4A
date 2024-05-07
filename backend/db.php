@@ -2,7 +2,8 @@
 require_once('db_credentials.php');
 $connection = mysqli_connect('127.0.0.1', 'root', '', 'vovvebloggen');
 
-function get_users($username) {
+function get_users($username)
+{
     global $connection;
     $statement = mysqli_prepare($connection, 'SELECT * FROM user WHERE username=?');
     mysqli_stmt_bind_param($statement, "s", $username);
@@ -12,7 +13,8 @@ function get_users($username) {
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
-function get_user($username) {
+function get_user($username)
+{
     global $connection; // Assuming $conn is your database connection
 
     $query = "SELECT * FROM user WHERE username = ?";
@@ -28,11 +30,12 @@ function get_user($username) {
     }
 }
 
-function add_user($username, $password) {
+function add_user($username, $email, $password)
+{
     global $connection;
     $password = password_hash($password, PASSWORD_DEFAULT);
-    $statement = mysqli_prepare($connection, 'INSERT INTO user (username, password) VALUES (?, ?)');
-    mysqli_stmt_bind_param($statement, "ss", $username, $password);
+    $statement = mysqli_prepare($connection, 'INSERT INTO user (username, email, password) VALUES (?, ?, ?)');
+    mysqli_stmt_bind_param($statement, "sss", $username, $email, $password);
     mysqli_stmt_execute($statement);
     mysqli_stmt_close($statement);
 }
@@ -50,7 +53,8 @@ function get_user_by_id($user_id)
     return $result;
 }
 
-function change_avatar($avatar, $user_id) {
+function change_avatar($avatar, $user_id)
+{
     global $connection;
     $statement = mysqli_prepare($connection, 'UPDATE user SET avatar=? WHERE id=?');
     mysqli_stmt_bind_param($statement, "si", $avatar, $user_id);
@@ -58,10 +62,11 @@ function change_avatar($avatar, $user_id) {
     mysqli_stmt_close($statement);
 }
 
-function update_user_profile($user_id, $username, $email, $new_password = null) {
+function update_user_profile($user_id, $username, $new_password = null)
+{
     global $connection;
     $sql = 'UPDATE user SET username=?, email=?';
-    $params = [$username, $email];
+    $params = [$username];
     if ($new_password !== null) {
         $sql .= ', password=?';
         $params[] = password_hash($new_password, PASSWORD_DEFAULT);
@@ -74,7 +79,8 @@ function update_user_profile($user_id, $username, $email, $new_password = null) 
     mysqli_stmt_close($statement);
 }
 
-function upload_profile_picture($user_id, $file) {
+function upload_profile_picture($user_id, $file)
+{
     // Assuming $file is an array with file info, as from $_FILES['fieldname']
     $filename = $file['name'];
     $filetmp = $file['tmp_name'];
@@ -83,7 +89,8 @@ function upload_profile_picture($user_id, $file) {
     change_avatar($filename, $user_id);
 }
 
-function request_password_reset($email) {
+function request_password_reset($email)
+{
     global $connection;
     $reset_code = bin2hex(random_bytes(20)); // Generate a random reset code
     $sql = 'UPDATE user SET reset_code=? WHERE email=?';
@@ -94,7 +101,8 @@ function request_password_reset($email) {
     // TODO: Send the reset code to the user's email address
 }
 
-function reset_password($email, $reset_code, $new_password) {
+function reset_password($email, $reset_code, $new_password)
+{
     global $connection;
     $sql = 'SELECT * FROM user WHERE email=? AND reset_code=?';
     $statement = mysqli_prepare($connection, $sql);
@@ -120,4 +128,3 @@ function get_result($statement)
     }
     return $rows;
 }
-?>

@@ -1,27 +1,21 @@
 <?php
 session_start();
-//require_once(__DIR__ . '/backend/db.php');
-
-
-require_once(__DIR__ . '/frontend/dashboard.php');
-
-
-
-
+require_once(__DIR__ . '/backend/db.php');
 
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
+    $email = $_POST['email'];
     $password = $_POST['password'];
 
     $user = get_user($username);
 
-    if ($user) {
+    if ($user && $user['email'] == $email) {
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             header("Location: frontend/dashboard.php");
             exit;
         } else {
-            $login_error = "Invalid username or password.";
+            $login_error = "Invalid username, email or password.";
         }
     } else {
         $login_error = "User not found.";
@@ -47,6 +41,10 @@ if (isset($_POST['submit'])) {
             <div class="input-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
             </div>
             <div class="input-group">
                 <label for="password">Password:</label>

@@ -1,7 +1,6 @@
 <?php
 require_once('../backend/db.php');
 
-
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
@@ -14,9 +13,8 @@ $user = get_user_by_id($user_id);
 
 if (isset($_POST['submit'])) {
     $username = $_POST['username'];
-    $email = $_POST['email'];
     $new_password = !empty($_POST['new_password']) ? $_POST['new_password'] : null;
-    update_user_profile($user_id, $username, $email, $new_password);
+    update_user_profile($user_id, $username, $new_password);
     $profile_updated = true;
 }
 
@@ -31,6 +29,7 @@ if (isset($_FILES['avatar'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
 
     <title>Profile</title>
 
@@ -41,15 +40,11 @@ if (isset($_FILES['avatar'])) {
         <h2>Profile</h2>
         <?php if (isset($profile_updated)) echo "<p class='success'>Profile updated.</p>"; ?>
         <?php if (isset($avatar_updated)) echo "<p class='success'>Avatar updated.</p>"; ?>
-        <img src="uploads/<?php echo $user['avatar']; ?>" alt="Avatar">
+        <img src="uploads/<?php echo isset($user['avatar']) ? $user['avatar'] : ''; ?>" alt="Avatar">
         <form action="profile.php" method="post" enctype="multipart/form-data">
             <div class="input-group">
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value="<?php echo $user['username']; ?>" required>
-            </div>
-            <div class="input-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="<?php echo $user['email']; ?>" required>
+                <input type="text" id="username" name="username" value="<?php echo isset($user['username']) ? $user['username'] : ''; ?>" required>
             </div>
             <div class="input-group">
                 <label for="new_password">New Password:</label>
