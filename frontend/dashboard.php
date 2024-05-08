@@ -4,7 +4,6 @@
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
-echo 'Session started';
 
 
 include(__DIR__ . '/../backend/db_credentials.php');
@@ -22,7 +21,6 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $user = get_user_by_id($user_id);
 $user = $user[0]; // Get the first user from the array
-var_dump($user);
 
 // If the user does not exist, you can display an error message and log them out
 if (!$user) {
@@ -43,16 +41,22 @@ if (!isset($user['username'])) {
 
 <head>
     <title>Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-    <div class="dashboard">
-        <h1>Welcome back, <?php echo $user['username']; ?>!</h1>
+    <div class="dashboard-container">
 
-        <a href="profile.php">Update Profile</a>
-        <a href="create_post.php">Create Post</a>
-        <a href="logout.php">Logout</a>
+        <div class="dashboard">
+            <h1>Welcome back, <?php echo $user['username']; ?>!</h1>
+
+            <a href="profile.php">Update Profile</a>
+            <a href="create_post.php">Create Post</a>
+            <a href="logout.php">Logout</a>
+        </div>
     </div>
 </body>
 

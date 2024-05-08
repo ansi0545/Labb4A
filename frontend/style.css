@@ -5,39 +5,171 @@
 }
 
 .body {
+  display: flex;
   background-color: #292524;
   color: #fafaf9;
   font-family: "Sono", sans-serif;
-  padding: 48px 64px;
+  padding: 2rem 3rem;
 }
 
-.dashboard {
-  width: 80%;
+h1 {
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-family: "Coiny", sans-serif;
+  color: #fafaf9;
+  line-height: 1;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+h2 {
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-family: "Coiny", sans-serif;
+  color: #fafaf9;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.login-container {
+  max-width: 500px;
   margin: 0 auto;
-  padding: 20px;
+  background-color: #44403c;
+  padding: 2rem;
+  border-radius: 16px;
 }
-.dashboard h1 {
-  color: #333;
+
+.dashboard-container {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #44403c;
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
 }
-.dashboard p {
-  color: #666;
+
+.profile-container {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #44403c;
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
 }
+
+.createpost-container {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #44403c;
+  padding: 2rem;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.profile-container img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1rem;
+}
+
+form {
+  max-width: 500px;
+  margin: 0 auto;
+  color: #fafaf9;
+  background-color: #44403c;
+  padding: 2rem;
+  border-radius: 16px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+form input[type="text"],
+form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+form input[type="file"] {
+  margin-bottom: 1rem;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+}
+
 .dashboard a {
   display: inline-block;
-  margin: 10px 0;
+  border: none;
+  font-family: "Coiny", sans-serif;
+  line-height: 1;
+  text-transform: uppercase;
+  font-size: 0.8rem;
   padding: 10px 20px;
+  background-image: linear-gradient(135deg, #3b82f6, #ef4444, #16a34a, #eab308);
   color: #fff;
-  background-color: #007BFF;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: 0.3s;
   text-decoration: none;
-  border-radius: 5px;
+  margin-bottom: 1rem;
 }
+
 .dashboard a:hover {
-  background-color: #0056b3;
+  transform: scale(110%) rotate(-2deg);
+}
+
+button[type="submit"] {
+  border: none;
+  font-family: "Coiny", sans-serif;
+  line-height: 1;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 16px 0 13px;
+  background-image: linear-gradient(135deg, #3b82f6, #ef4444, #16a34a, #eab308);
+  color: inherit;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 100%;
+}
+
+button[type="submit"]:hover {
+  transform: scale(110%) rotate(-2deg);
+}
+
+.error {
+  color: #ef4444;
+  margin-bottom: 1rem;
+}
+
+.success {
+  color: #16a34a;
+  margin-bottom: 1rem;
 }
 
 .register-button {
   display: inline-block;
-  background-color: #4CAF50; /* Green */
+  background-color: #4caf50; /* Green */
   border: none;
   color: white;
   padding: 15px 32px;
