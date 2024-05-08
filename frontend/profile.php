@@ -40,7 +40,7 @@ if (isset($_FILES['avatar'])) {
 
 <body>
     <div class="profile-container">
-        <h2>Profile</h2>
+        <h1>Profile</h1>
         <?php if (isset($profile_updated)) echo "<p class='success'>Profile updated.</p>"; ?>
         <?php if (isset($avatar_updated)) echo "<p class='success'>Avatar updated.</p>"; ?>
         <img src="uploads/<?php echo isset($user['avatar']) ? $user['avatar'] : ''; ?>" alt="Avatar">

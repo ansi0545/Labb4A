@@ -23,19 +23,23 @@ if (isset($_POST['submit'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Register</title>
 </head>
 
 <body>
     <div class="register-container">
-        <h2>Register</h2>
+        
         <?php
         if (isset($register_error)) {
             echo "<p class='error'>$register_error</p>";
         }
         ?>
         <form action="register.php" method="post">
+        <h1>Register</h1>
             <div class="input-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -52,7 +56,7 @@ if (isset($_POST['submit'])) {
                 <button type="submit" name="submit">Register</button>
             </div>
         </form>
-        <p>Already have an account? <a href="login.php">Login here</a></p>
+        <p>Already have an account? <a href="/login.php">Login here</a></p>
     </div>
 </body>
 

@@ -67,13 +67,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Create Post</title>
-    <!-- Include your CSS file here -->
-    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 
 <body>
-    <h1>Create Post</h1>
+   
+
 
     <!-- Display errors -->
     <?php if (!empty($errors)) : ?>
@@ -86,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Post form -->
     <form method="POST" enctype="multipart/form-data">
+    <h1>Create Post</h1>
         <label for="title">Title</label>
         <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($title); ?>">
 

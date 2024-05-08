@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
 
 <body>
     <div class="login-container">
-        <h2>Login</h2>
+        <h1>Login</h1>
         <?php if (isset($login_error)) echo "<p class='error'>$login_error</p>"; ?>
         <form action="login.php" method="post">
             <div class="input-group">
