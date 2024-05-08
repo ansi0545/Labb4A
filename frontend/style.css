@@ -153,29 +153,6 @@ form input[type="file"] {
   margin-bottom: 1rem;
 }
 
-/* a {
-  display: inline-block;
-  font-family: "Coiny", sans-serif;
-  line-height: 1;
-  text-transform: uppercase;
-  font-size: 0.8rem;
-  padding: 16px 0 13px;
-  background-image: linear-gradient(135deg, #3b82f6, #ef4444, #16a34a, #eab308);
-  color: inherit;
-  border-radius: 100px;
-  cursor: pointer;
-  transition: 0.3s;
-  text-align: center;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-  text-decoration: none;
-}
-
-a:hover {
-  transform: scale(110%) rotate(-2deg);
-} */
-
 .dashboard a {
   display: inline-block;
   border: none;
@@ -328,7 +305,7 @@ ul {
   line-height: 1;
   text-transform: uppercase;
   font-size: 0.8rem;
-  padding: 16px 0 13px;
+  padding: 16px 20px 15px 20px;
   background-image: linear-gradient(135deg, #3b82f6, #ef4444, #16a34a, #eab308);
   color: inherit;
   border-radius: 100px;
@@ -353,43 +330,6 @@ ul {
   width: 100%;
   background-image: none;
 }
-
-/* FORM */
-/* .fact-form {
-  background-color: #44403c;
-  margin-bottom: 40px;
-  padding: 16px 32px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  border-radius: 16px;
-}
-
-.fact-form input,
-.fact-form select {
-  width: 220px;
-  background-color: #78716c;
-  border: none;
-  border-radius: 100px;
-  padding: 16px;
-  font-size: 18px;
-  color: inherit;
-  font-family: inherit;
-}
-
-.fact-form input::placeholder {
-  color: #a8a29e;
-}
-
-.fact-form input:first-child {
-  flex-grow: 1;
-}
-
-.fact-form span {
-  font-weight: 600;
-  font-size: 18px;
-  margin-right: 18px;
-} */
 
 @media (max-width: 1000px) {
   body {
