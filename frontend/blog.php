@@ -25,19 +25,54 @@ mysqli_close($connection);
 </head>
 
 <body>
-   
+    <section class="blogposts-container">
+        <header class="header">
+            <h1>Vovvebloggen</h1>
+        </header>
 
-   <section class="blogposts-container">
-   <h1>Blog</h1>
-    <?php foreach ($posts as $post) : ?>
-        <div class="post">
-            <h2><?php echo htmlspecialchars($post['title']); ?></h2>
-            <p><?php echo htmlspecialchars($post['content']); ?></p>
-        </div>
-    <?php endforeach; ?>
+        <main class="main">
+            <aside>
+                <ul>
+                    <li class="category"><button class="btn btn-all-categories">Allt om hundar</button></li>
+                    <li class="category">
+                        <button class="btn btn-category" style="background-color:#3b82f6">Hundträning</button>
+                    </li>
+                    <li class="category">
+                        <button class="btn btn-category" style="background-color: #16a34a">Hundfoder</button>
+                    </li>
+                    <li class="category">
+                        <button class="btn btn-category" style="background-color: #ef4444">Barmarksdrag</button>
+                    </li>
+                    <li class="category">
+                        <button class="btn btn-category" style="background-color: #eab308">Hundutrustning</button>
+                    </li>
+                    <li class="category">
+                        <button class="btn btn-category" style="background-color: #db2777">Agility</button>
+                    </li>
+                    <li class="category">
+                        <button class="btn btn-category" style="background-color: #14b8a6">Rallylydnad</button>
+                    </li>
+                </ul>
+            </aside>
 
-    <a href="create_post.php">Create a new post</a>
-   </section>
+            <section>
+                <ul class="blog-list">
+                    <li class="blogPosts">
+                        <?php foreach ($posts as $post) : ?>
+                            <div class="post">
+                                <h2><?php echo htmlspecialchars($post['title']); ?></h2>
+                                <p><?php echo htmlspecialchars($post['content']); ?></p>
+                            </div>
+                        <?php endforeach; ?>
+                    </li>
+                    <!-- <a href="create_post.php">Create a new post</a> -->
+            </section>
+
+        </main>
+        </div> <!-- end container -->
+
+
+
 </body>
 
 </html>
