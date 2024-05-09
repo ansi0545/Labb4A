@@ -36,32 +36,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Innehåll är obligatoriskt';
     }
 
+    $image_path = '';
+    // Hantera filuppladdning om en fil har laddats upp
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $target_dir = 'uploads/';
+        $target_file = $target_dir . basename($_FILES['image']['name']);
+
+        // Kontrollera om katalogen finns, om inte, skapa den
+        if (!file_exists($target_dir)) {
+            mkdir($target_dir, 0777, true);
+        }
+
+        // Flytta den uppladdade filen
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+            echo 'Filen ' . basename($_FILES['image']['name']) . ' har laddats upp.';
+            $image_path = $target_file; // This is the path of the uploaded file
+        } else {
+            echo 'Tyvärr, det blev ett fel vid uppladdningen av din fil.';
+        }
+    }
+
     // Kontrollera om det inte finns några fel
     if (empty($errors)) {
         // Infoga inlägg i databasen inklusive kategori
-        $sql = 'INSERT INTO post (title, content, user_id, category_id) VALUES (?, ?, ?, ?)';
+        $sql = 'INSERT INTO post (title, content, user_id, category_id, image_path) VALUES (?, ?, ?, ?, ?)';
         $stmt = mysqli_prepare($connection, $sql);
-        mysqli_stmt_bind_param($stmt, 'ssii', $title, $content, $_SESSION['user_id'], $category_id);
+        mysqli_stmt_bind_param($stmt, 'ssiis', $title, $content, $_SESSION['user_id'], $category_id, $image_path);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
-        // Hantera filuppladdning om en fil har laddats upp
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $target_dir = 'uploads/';
-            $target_file = $target_dir . basename($_FILES['image']['name']);
-
-            // Kontrollera om katalogen finns, om inte, skapa den
-            if (!file_exists($target_dir)) {
-                mkdir($target_dir, 0777, true);
-            }
-
-            // Flytta den uppladdade filen
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
-                echo 'Filen ' . basename($_FILES['image']['name']) . ' har laddats upp.';
-            } else {
-                echo 'Tyvärr, det blev ett fel vid uppladdningen av din fil.';
-            }
-        }
+       
 
         // Omdirigera till bloggsidan
         header('Location: blog.php');
@@ -105,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <label for="category">Kategori</label>
         <select id="category" name="category">
-            <?php foreach ($categories as $category): ?>
+            <?php foreach ($categories as $category) : ?>
                 <option value="<?php echo $category['id']; ?>"><?php echo htmlspecialchars($category['name']); ?></option>
             <?php endforeach; ?>
         </select>

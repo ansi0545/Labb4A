@@ -98,6 +98,9 @@ $categoryColors = [
                                 <h2><?php echo htmlspecialchars($post['title']); ?></h2>
                                 <p><?php echo htmlspecialchars($post['content']); ?></p>
                                 <p>Category: <?php echo htmlspecialchars($post['category_name']); ?></p>
+                                <?php if (!empty($post['image_path'])) : ?>
+                                    <img src="<?php echo htmlspecialchars($post['image_path']); ?>" alt="Blog Image">
+                                <?php endif; ?>
                             </div>
                         </li>
                     <?php endforeach; ?>
