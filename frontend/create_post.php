@@ -1,62 +1,69 @@
 <?php
 session_start();
 
-// Check if user is logged in
+// Kontrollera om användaren är inloggad
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
 
-// Include your database connection file here
+// Inkludera din databasanslutningsfil här
 require_once(__DIR__ . '/../backend/db.php');
 
 $errors = [];
 $title = '';
 $content = '';
+$category_id = 0; // Lägg till detta
 
-// Check if form is submitted
+// Hämta kategorier för dropdown
+$categorySql = 'SELECT * FROM categories ORDER BY name ASC';
+$categoryResult = mysqli_query($connection, $categorySql);
+$categories = mysqli_fetch_all($categoryResult, MYSQLI_ASSOC);
+
+// Kontrollera om formuläret har skickats
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $content = $_POST['content'];
+    $category_id = $_POST['category']; // Hämta vald kategori
 
-    // Validate title
+    // Validera titel
     if (empty($title)) {
-        $errors[] = 'Title is required';
+        $errors[] = 'Titel är obligatorisk';
     }
 
-    // Validate content
+    // Validera innehåll
     if (empty($content)) {
-        $errors[] = 'Content is required';
+        $errors[] = 'Innehåll är obligatoriskt';
     }
 
-    // Check if there are no errors
+    // Kontrollera om det inte finns några fel
     if (empty($errors)) {
-        // Insert post into database
-        $sql = 'INSERT INTO post (title, content, user_id) VALUES (?, ?, ?)'; // Changed 'posts' to 'post'
+        // Infoga inlägg i databasen inklusive kategori
+        $sql = 'INSERT INTO post (title, content, user_id, category_id) VALUES (?, ?, ?, ?)';
         $stmt = mysqli_prepare($connection, $sql);
-        mysqli_stmt_bind_param($stmt, 'ssi', $title, $content, $_SESSION['user_id']);
+        mysqli_stmt_bind_param($stmt, 'ssii', $title, $content, $_SESSION['user_id'], $category_id);
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
-        // Handle file upload if a file was uploaded
+        // Hantera filuppladdning om en fil har laddats upp
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $target_dir = 'uploads/';
             $target_file = $target_dir . basename($_FILES['image']['name']);
 
-            // Check if the directory exists, if not, create it
+            // Kontrollera om katalogen finns, om inte, skapa den
             if (!file_exists($target_dir)) {
                 mkdir($target_dir, 0777, true);
             }
 
-            // Move the uploaded file
+            // Flytta den uppladdade filen
             if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
-                echo 'The file ' . basename($_FILES['image']['name']) . ' has been uploaded.';
+                echo 'Filen ' . basename($_FILES['image']['name']) . ' har laddats upp.';
             } else {
-                echo 'Sorry, there was an error uploading your file.';
+                echo 'Tyvärr, det blev ett fel vid uppladdningen av din fil.';
             }
         }
 
-        // Redirect to the blog page
+        // Omdirigera till bloggsidan
         header('Location: blog.php');
         exit();
     }
@@ -73,14 +80,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <title>Create Post</title>
+    <title>Skapa Inlägg</title>
 </head>
 
 <body>
-   
 
-
-    <!-- Display errors -->
+    <!-- Visa felmeddelanden -->
     <?php if (!empty($errors)) : ?>
         <div class="errors">
             <?php foreach ($errors as $error) : ?>
@@ -89,19 +94,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     <?php endif; ?>
 
-    <!-- Post form -->
+    <!-- Inläggsformulär -->
     <form method="POST" enctype="multipart/form-data">
-    <h1>Create Post</h1>
-        <label for="title">Title</label>
+        <h1>Skapa Inlägg</h1>
+        <label for="title">Titel</label>
         <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($title); ?>">
 
-        <label for="content">Content</label>
+        <label for="content">Innehåll</label>
         <textarea id="content" name="content"><?php echo htmlspecialchars($content); ?></textarea>
 
-        <label for="image">Image</label>
+        <label for="category">Kategori</label>
+        <select id="category" name="category">
+            <?php foreach ($categories as $category): ?>
+                <option value="<?php echo $category['id']; ?>"><?php echo htmlspecialchars($category['name']); ?></option>
+            <?php endforeach; ?>
+        </select>
+
+        <label for="image">Bild</label>
         <input type="file" id="image" name="image">
 
-        <button type="submit">Create Post</button>
+        <button type="submit">Skapa Inlägg</button>
     </form>
 </body>
 
