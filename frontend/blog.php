@@ -9,14 +9,19 @@ $posts = [];
 $filter = isset($_GET['filter']) ? $_GET['filter'] : null;
 
 if ($filter) {
-    // Prepare the SQL statement with a placeholder for the category name
-    $stmt = $connection->prepare("SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id WHERE c.name = ? ORDER BY p.id DESC");
-    // Bind the $filter variable to the placeholder in the prepared statement
-    $stmt->bind_param("s", $filter);
-    // Execute the prepared statement
-    $stmt->execute();
-    // Get the result of the query
-    $result = $stmt->get_result();
+    if ($filter === 'Allt om hundar') {
+        // Execute the query to fetch all posts without filtering by category
+        $result = mysqli_query($connection, 'SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id ORDER BY p.id DESC');
+    } else {
+        // Prepare the SQL statement with a placeholder for the category name
+        $stmt = $connection->prepare("SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id WHERE c.name = ? ORDER BY p.id DESC");
+        // Bind the $filter variable to the placeholder in the prepared statement
+        $stmt->bind_param("s", $filter);
+        // Execute the prepared statement
+        $stmt->execute();
+        // Get the result of the query
+        $result = $stmt->get_result();
+    }
 } else {
     // Execute the default query to fetch all posts
     $result = mysqli_query($connection, 'SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id ORDER BY p.id DESC');
