@@ -44,12 +44,15 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
     <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
     <!-- Display the user's avatar -->
-    <img class="avatar" src="<?php echo isset($avatar_path) ? htmlspecialchars($avatar_path) : 'http://localhost/Labb4A/frontend/uploads/' . (isset($user['avatar']) ? $user['avatar'] : ''); ?>" alt="Avatar">
+
 </head>
 
 <body>
     <div class="dashboard-container">
         <div class="dashboard">
+            <header>
+                <img class="avatar" src="<?php echo isset($avatar_path) ? htmlspecialchars($avatar_path) : 'http://localhost/Labb4A/frontend/uploads/' . (isset($user['avatar']) ? $user['avatar'] : ''); ?>" alt="Avatar">
+            </header>
 
 
             <h1>Welcome back, <?php echo $user['username']; ?>!</h1>

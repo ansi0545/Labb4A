@@ -104,11 +104,11 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <img class="avatar" src="<?php echo isset($avatar_path) ? htmlspecialchars($avatar_path) : 'http://localhost/Labb4A/frontend/uploads/' . (isset($user['avatar']) ? $user['avatar'] : ''); ?>" alt="Avatar">
-    <title>Skapa Inlägg</title>
+
 </head>
 
 <body>
+
 
     <!-- Visa felmeddelanden -->
     <?php if (!empty($errors)) : ?>
@@ -121,6 +121,9 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
 
     <!-- Inläggsformulär -->
     <form method="POST" enctype="multipart/form-data">
+        <header>
+            <img class="avatar" src="<?php echo isset($avatar_path) ? htmlspecialchars($avatar_path) : 'http://localhost/Labb4A/frontend/uploads/' . (isset($user['avatar']) ? $user['avatar'] : ''); ?>" alt="Avatar">
+        </header>
         <h1>Skapa Inlägg</h1>
         <label for="title">Titel</label>
         <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($title); ?>">
