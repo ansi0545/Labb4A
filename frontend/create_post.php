@@ -142,6 +142,7 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
         <input type="file" id="image" name="image">
 
         <button type="submit">Skapa Inlägg</button>
+        <a href="dashboard.php">Dashboard</a>
     </form>
 </body>
 

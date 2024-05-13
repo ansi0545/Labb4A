@@ -133,7 +133,7 @@ function upload_profile_picture($user_id, $avatar) {
     // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($avatar["tmp_name"], $target_file)) {
-            echo "The file ". htmlspecialchars( basename( $avatar["name"])). " has been uploaded.";
+
             $sql = "UPDATE user SET avatar = ? WHERE id = ?";
             $stmt = $connection->prepare($sql);
             $stmt->bind_param("si", $target_file, $user_id);

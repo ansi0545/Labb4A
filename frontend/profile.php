@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar']) && $_FILES
 
     // Move the uploaded file
     if (move_uploaded_file($_FILES['avatar']['tmp_name'], $target_file)) {
-        echo 'The file ' . basename($_FILES['avatar']['name']) . ' has been uploaded.';
+
         $avatar_path = $target_file; // Save the path of the uploaded file
 
         // Update the user's avatar in the database
@@ -79,7 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
             <div class="input-group">
                 <button type="submit" name="submit">Update Profile</button>
             </div>
-        </form>
+            <a href="dashboard.php">Dashboard</a>
+    </div>
+    </form>
     </div>
 </body>
 
