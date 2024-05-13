@@ -11,16 +11,34 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $user = get_user_by_id($user_id);
 
-if (isset($_POST['submit'])) {
+// Handle file upload if a file has been uploaded
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['avatar']) && $_FILES['avatar']['error'] === UPLOAD_ERR_OK) {
+    $target_dir = 'uploads/';
+    $target_file = $target_dir . basename($_FILES['avatar']['name']);
+
+    // Check if the directory exists, if not, create it
+    if (!file_exists($target_dir)) {
+        mkdir($target_dir, 0777, true);
+    }
+
+    // Move the uploaded file
+    if (move_uploaded_file($_FILES['avatar']['tmp_name'], $target_file)) {
+        echo 'The file ' . basename($_FILES['avatar']['name']) . ' has been uploaded.';
+        $avatar_path = $target_file; // Save the path of the uploaded file
+
+        // Update the user's avatar in the database
+        change_avatar($avatar_path, $user_id);
+    } else {
+        echo 'Sorry, there was an error uploading your file.';
+    }
+}
+
+// Handle profile update
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $username = $_POST['username'];
     $new_password = !empty($_POST['new_password']) ? $_POST['new_password'] : null;
     update_user_profile($user_id, $username, $new_password);
     $profile_updated = true;
-}
-
-if (isset($_FILES['avatar'])) {
-    upload_profile_picture($user_id, $_FILES['avatar']);
-    $avatar_updated = true;
 }
 ?>
 <!DOCTYPE html>
@@ -30,8 +48,8 @@ if (isset($_FILES['avatar'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
 
     <title>Profile</title>
@@ -42,8 +60,9 @@ if (isset($_FILES['avatar'])) {
     <div class="profile-container">
         <h1>Profile</h1>
         <?php if (isset($profile_updated)) echo "<p class='success'>Profile updated.</p>"; ?>
-        <?php if (isset($avatar_updated)) echo "<p class='success'>Avatar updated.</p>"; ?>
-        <img src="uploads/<?php echo isset($user['avatar']) ? $user['avatar'] : ''; ?>" alt="Avatar">
+        <?php if (isset($avatar_path)) echo "<p class='success'>Avatar updated.</p>"; ?>
+        <img class="avatar" src="<?php echo isset($avatar_path) ? htmlspecialchars($avatar_path) : 'http://localhost/Labb4A/frontend/uploads/' . (isset($user['avatar']) ? $user['avatar'] : ''); ?>" alt="Avatar">
+
         <form action="profile.php" method="post" enctype="multipart/form-data">
             <div class="input-group">
                 <label for="username">Username:</label>

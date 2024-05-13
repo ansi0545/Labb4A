@@ -63,12 +63,12 @@ function change_avatar($avatar, $user_id)
 }
 
 
-function update_user_profile($user_id, $username, $email, $new_password = null)
+function update_user_profile($user_id, $username, $new_password = null)
 {
     global $connection;
-    $sql = 'UPDATE user SET username=?, email=?';
-    $params = [$username, $email];
-    $types = 'ss'; // username and email are strings
+    $sql = 'UPDATE user SET username=?';
+    $params = [$username];
+    $types = 's'; // username and email are strings
 
     if ($new_password !== null) {
         $sql .= ', password=?';
@@ -87,26 +87,63 @@ function update_user_profile($user_id, $username, $email, $new_password = null)
 }
 
 
-function upload_profile_picture($user_id, $file)
-{
-    $target_dir = "uploads/";
+function upload_profile_picture($user_id, $avatar) {
+    // Assuming you have a $connection variable for your database connection
+    global $connection;
 
-    // Check if the directory exists
-    if (!file_exists($target_dir)) {
-        // If not, create the directory
-        mkdir($target_dir, 0777, true);
+    $target_dir = 'uploads/';
+    $target_file = $target_dir . basename($avatar["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+    // Check if image file is a actual image or fake image
+    if(isset($_POST["submit"])) {
+        $check = getimagesize($avatar["tmp_name"]);
+        if($check !== false) {
+            echo "File is an image - " . $check["mime"] . ".";
+            $uploadOk = 1;
+        } else {
+            echo "File is not an image.";
+            $uploadOk = 0;
+        }
     }
 
-    // Now proceed with moving the uploaded file
-    $target_file = $target_dir . basename($file["name"]);
-    if (move_uploaded_file($file["tmp_name"], $target_file)) {
-        // Update the user's avatar in the database
-        change_avatar($target_file, $user_id);
-        echo "The file " . basename($file["name"]) . " has been uploaded.";
+    // Check if file already exists
+    if (file_exists($target_file)) {
+        echo "Sorry, file already exists.";
+        $uploadOk = 0;
+    }
+
+    // Check file size
+    if ($avatar["size"] > 500000) {
+        echo "Sorry, your file is too large.";
+        $uploadOk = 0;
+    }
+
+    // Allow certain file formats
+    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+    && $imageFileType != "gif" ) {
+        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+        $uploadOk = 0;
+    }
+
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+        echo "Sorry, your file was not uploaded.";
+    // if everything is ok, try to upload file
     } else {
-        echo "Sorry, there was an error uploading your file.";
+        if (move_uploaded_file($avatar["tmp_name"], $target_file)) {
+            echo "The file ". htmlspecialchars( basename( $avatar["name"])). " has been uploaded.";
+            $sql = "UPDATE user SET avatar = ? WHERE id = ?";
+            $stmt = $connection->prepare($sql);
+            $stmt->bind_param("si", $target_file, $user_id);
+            $stmt->execute();
+        } else {
+            echo "Sorry, there was an error uploading your file.";
+        }
     }
 }
+
 
 function request_password_reset($email)
 {
@@ -129,9 +166,10 @@ function reset_password($email, $reset_code, $new_password)
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
     mysqli_stmt_close($statement);
-    if (count($result) === 1) {
-        $user_id = $result[0]['id'];
-        update_user_profile($user_id, $result[0]['username'], $email, $new_password);
+    if (mysqli_num_rows($result) === 1) {
+        $user = mysqli_fetch_assoc($result);
+        $user_id = $user['id'];
+        update_user_profile($user_id, $user['username'], $new_password);
     } else {
         // TODO: Handle the error case where the reset code is incorrect
     }

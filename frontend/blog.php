@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once(__DIR__ . '/../backend/db.php');
 
 if (!$connection) {
@@ -57,6 +58,33 @@ $categoryColors = [
     'Rallylydnad' => '#14b8a6',
 ];
 
+if (!isset($_SESSION['user_id'])) {
+    // Redirect to the login page if not logged in
+    header("Location: login.php");
+    exit;
+}
+
+// Get the user ID from the session
+$user_id = $_SESSION['user_id'];
+
+// Fetch user data including the avatar path
+$user = get_user_by_id($user_id);
+$user = $user[0]; // Get the first user from the array
+
+// If the user does not exist, you can display an error message and log them out
+if (!$user) {
+    // Display an error message and log out the user
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
+
+// Check if the 'avatar' key is set in the $user array
+$avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
+
+// Close the session
+session_write_close();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -74,6 +102,7 @@ $categoryColors = [
 <body>
     <section class="blogposts-container">
         <header class="header">
+            <img class="avatar" src="<?php echo isset($avatar_path) ? htmlspecialchars($avatar_path) : 'http://localhost/Labb4A/frontend/uploads/' . (isset($user['avatar']) ? $user['avatar'] : ''); ?>" alt="Avatar">
             <h1>Vovvebloggen</h1>
         </header>
 

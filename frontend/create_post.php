@@ -65,13 +65,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_stmt_execute($stmt);
         mysqli_stmt_close($stmt);
 
-       
+
 
         // Omdirigera till bloggsidan
         header('Location: blog.php');
         exit();
     }
 }
+// Get user information from the session or the database based on the user ID
+$user_id = $_SESSION['user_id'];
+$user = get_user_by_id($user_id);
+$user = $user[0]; // Get the first user from the array
+
+// If the user does not exist, you can display an error message and log them out
+if (!$user) {
+    // Display an error message and log out the user
+    session_destroy();
+    //header("Location: login.php");
+    exit;
+}
+
+// Check if the 'username' key is set in the $user array
+if (!isset($user['username'])) {
+    $user['username'] = 'Guest';
+}
+
+// Get the avatar path for the logged-in user
+$avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
 ?>
 
 <!DOCTYPE html>
@@ -84,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <img class="avatar" src="<?php echo isset($avatar_path) ? htmlspecialchars($avatar_path) : 'http://localhost/Labb4A/frontend/uploads/' . (isset($user['avatar']) ? $user['avatar'] : ''); ?>" alt="Avatar">
     <title>Skapa Inlägg</title>
 </head>
 
