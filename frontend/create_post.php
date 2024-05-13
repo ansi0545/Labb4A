@@ -124,7 +124,7 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
         <header>
             <img class="avatar" src="<?php echo isset($avatar_path) ? htmlspecialchars($avatar_path) : 'http://localhost/Labb4A/frontend/uploads/' . (isset($user['avatar']) ? $user['avatar'] : ''); ?>" alt="Avatar">
         </header>
-        <h1>Skapa Inlägg</h1>
+        <h1>Create post</h1>
         <label for="title">Titel</label>
         <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($title); ?>">
 
@@ -141,7 +141,7 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
         <label for="image">Bild</label>
         <input type="file" id="image" name="image">
 
-        <button type="submit">Skapa Inlägg</button>
+        <button type="submit">Create post</button>
         <a href="dashboard.php">Dashboard</a>
     </form>
 </body>

@@ -143,6 +143,7 @@ form input[type="file"] {
 
 .post {
   max-width: 500px;
+  
   margin: 0 auto 2rem;
   background-color: #78716c;
   padding: 2rem;
@@ -156,6 +157,7 @@ form input[type="file"] {
 
 .post p {
   margin-bottom: 1rem;
+  overflow: hidden;
 }
 
  a {
