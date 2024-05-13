@@ -58,6 +58,7 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
             <h1>Welcome back, <?php echo $user['username']; ?>!</h1>
             <a href="profile.php">Update Profile</a>
             <a href="create_post.php">Create Post</a>
+            <a href="blog.php">Blog</a>
             <a href="logout.php">Logout</a>
         </div>
     </div>

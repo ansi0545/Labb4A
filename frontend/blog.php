@@ -2,6 +2,8 @@
 session_start();
 require_once(__DIR__ . '/../backend/db.php');
 
+$loggedInUserId = $_SESSION['user_id'];
+
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
@@ -126,15 +128,23 @@ session_write_close();
                             <div class="post">
                                 <h2><?php echo htmlspecialchars($post['title']); ?></h2>
                                 <p><?php echo htmlspecialchars($post['content']); ?></p>
+
                                 <p>Category: <?php echo htmlspecialchars($post['category_name']); ?></p>
                                 <?php if (!empty($post['image_path'])) : ?>
                                     <img src="<?php echo htmlspecialchars($post['image_path']); ?>" alt="Blog Image">
                                 <?php endif; ?>
+                                <?php // If the logged-in user is the author of the post, display the "Edit" and "Delete" buttons
+                                if ($post['user_id'] == $loggedInUserId) {
+                                    echo '<a href="edit_post.php?id=' . $post['id'] . '">Edit</a>';
+                                    echo '<a href="delete_post.php?id=' . $post['id'] . '" onclick="return confirm(\'Are you sure you want to delete this post?\')">Delete</a>';
+                                }
+                                ?>
                             </div>
                         </li>
                     <?php endforeach; ?>
                 </ul>
                 <a href="create_post.php">Create a new post</a>
+                <a href="dashboard.php">Dashboard</a>
             </section>
 
         </main>

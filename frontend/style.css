@@ -42,7 +42,7 @@ h2 {
 }
 
 .dashboard-container {
-  max-width: 500px;
+  max-width: 1500px;
   margin: 0 auto;
   background-color: #44403c;
   padding: 2rem;
@@ -331,9 +331,6 @@ ul {
   background-image: none;
 }
 
-.dashboardButton {
-
-}
 
 @media (max-width: 1000px) {
   body {
