@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 // Kontrollera om användaren är inloggad
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
@@ -9,16 +10,14 @@ if (!isset($_SESSION['user_id'])) {
 
 // Inkludera din databasanslutningsfil här
 require_once(__DIR__ . '/../backend/db.php');
+include 'menu.php';
 
 $errors = [];
 $title = '';
 $content = '';
 $category_id = 0; // Lägg till detta
 
-// Hämta kategorier för dropdown
-$categorySql = 'SELECT * FROM categories ORDER BY name ASC';
-$categoryResult = mysqli_query($connection, $categorySql);
-$categories = mysqli_fetch_all($categoryResult, MYSQLI_ASSOC);
+
 
 // Kontrollera om formuläret har skickats
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

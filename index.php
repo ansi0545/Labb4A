@@ -2,6 +2,8 @@
 session_start();
 require_once(__DIR__ . '/backend/db.php');
 
+include 'frontend/menu.php';
+
 // Fetch latest posts and newest blogger
 $latest_posts = get_latest_posts();
 $newest_blogger = get_newest_blogger();
