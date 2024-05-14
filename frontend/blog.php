@@ -143,7 +143,7 @@ session_write_close();
                         </li>
                     <?php endforeach; ?>
                 </ul>
-                <a href="create_post.php">Create a new post</a>
+                <a href="create_post.php">Create post</a>
                 <a href="dashboard.php">Dashboard</a>
             </section>
 
