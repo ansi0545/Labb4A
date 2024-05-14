@@ -78,11 +78,12 @@ h2 {
   padding: 2rem;
   border-radius: 16px;
 
+
 }
+
 .blogPost {
   font-size: 1rem;
   line-height: 1.4;
-  columns: #fafaf9;
   background-color: #44403c;
   margin-bottom: 1rem;
   padding: 1rem 1.2rem;
@@ -91,6 +92,23 @@ h2 {
   align-items: center;
   gap: 1.2rem;
   border-radius: 16px;
+}
+
+
+.post {
+  max-width: 100%; /* Ensure the image doesn't overflow its container */
+  margin: 0 auto; /* Center the image horizontally */
+}
+
+.post img {
+  display: block; /* Ensure the image behaves as a block element */
+  max-width: 100%; /* Ensure the image doesn't overflow its container */
+  height: auto; /* Maintain aspect ratio */
+  border-radius: 8px; /* Optional: Add border-radius to the image */
+}
+
+.post a {
+  margin: 1rem 0.2rem;
 }
 
 
