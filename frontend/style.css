@@ -247,7 +247,7 @@ button[type="submit"]:hover {
   margin-bottom: 40px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .main {
