@@ -172,6 +172,40 @@ function get_post_by_id($post_id)
     return $result->fetch_assoc();
 }
 
+function get_latest_posts($limit = 10)
+{
+    global $connection;
+    $sql = 'SELECT * FROM post ORDER BY created DESC LIMIT ?';
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, "i", $limit);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    mysqli_stmt_close($statement);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+function get_all_bloggers()
+{
+    global $connection;
+    $sql = 'SELECT * FROM user';
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    mysqli_stmt_close($statement);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+function get_newest_blogger()
+{
+    global $connection;
+    $sql = 'SELECT * FROM user ORDER BY created DESC LIMIT 1';
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_execute($statement);
+    $result = mysqli_stmt_get_result($statement);
+    mysqli_stmt_close($statement);
+    return mysqli_fetch_assoc($result);
+}
+
 function reset_password($email, $reset_code, $new_password)
 {
     global $connection;
