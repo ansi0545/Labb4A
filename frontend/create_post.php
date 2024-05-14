@@ -125,20 +125,20 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
             <img class="avatar" src="<?php echo isset($avatar_path) ? htmlspecialchars($avatar_path) : 'http://localhost/Labb4A/frontend/uploads/' . (isset($user['avatar']) ? $user['avatar'] : ''); ?>" alt="Avatar">
         </header>
         <h1>Create post</h1>
-        <label for="title">Titel</label>
+        <label for="title">Title</label>
         <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($title); ?>">
 
-        <label for="content">Innehåll</label>
+        <label for="content">Content</label>
         <textarea id="content" name="content"><?php echo htmlspecialchars($content); ?></textarea>
 
-        <label for="category">Kategori</label>
+        <label for="category">Category</label>
         <select id="category" name="category">
             <?php foreach ($categories as $category) : ?>
                 <option value="<?php echo $category['id']; ?>"><?php echo htmlspecialchars($category['name']); ?></option>
             <?php endforeach; ?>
         </select>
 
-        <label for="image">Bild</label>
+        <label for="image">Image</label>
         <input type="file" id="image" name="image">
 
         <button type="submit">Create post</button>
