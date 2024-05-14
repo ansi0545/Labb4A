@@ -87,19 +87,20 @@ function update_user_profile($user_id, $username, $new_password = null)
 }
 
 
-function upload_profile_picture($user_id, $avatar) {
+function upload_profile_picture($user_id, $avatar)
+{
     // Assuming you have a $connection variable for your database connection
     global $connection;
 
     $target_dir = 'uploads/';
     $target_file = $target_dir . basename($avatar["name"]);
     $uploadOk = 1;
-    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
     // Check if image file is a actual image or fake image
-    if(isset($_POST["submit"])) {
+    if (isset($_POST["submit"])) {
         $check = getimagesize($avatar["tmp_name"]);
-        if($check !== false) {
+        if ($check !== false) {
             echo "File is an image - " . $check["mime"] . ".";
             $uploadOk = 1;
         } else {
@@ -121,8 +122,10 @@ function upload_profile_picture($user_id, $avatar) {
     }
 
     // Allow certain file formats
-    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-    && $imageFileType != "gif" ) {
+    if (
+        $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif"
+    ) {
         echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
         $uploadOk = 0;
     }
@@ -130,7 +133,7 @@ function upload_profile_picture($user_id, $avatar) {
     // Check if $uploadOk is set to 0 by an error
     if ($uploadOk == 0) {
         echo "Sorry, your file was not uploaded.";
-    // if everything is ok, try to upload file
+        // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($avatar["tmp_name"], $target_file)) {
 
@@ -155,6 +158,18 @@ function request_password_reset($email)
     mysqli_stmt_execute($statement);
     mysqli_stmt_close($statement);
     // TODO: Send the reset code to the user's email address
+}
+
+function get_post_by_id($post_id)
+{
+    global $connection;
+
+    $stmt = $connection->prepare("SELECT * FROM post WHERE id = ?");
+    $stmt->bind_param("i", $post_id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
 }
 
 function reset_password($email, $reset_code, $new_password)
