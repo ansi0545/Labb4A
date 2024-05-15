@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-// Include the database connection file
+
 require_once(__DIR__ . '/../backend/db.php');
 
-// Check if the database connection is successful
+
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
@@ -15,21 +15,21 @@ include 'content.php';
 include 'menu.php';
 include 'info.php';
 
-// Prepare the SQL query to fetch posts
-// Prepare the SQL query to fetch posts
+
+
 $sql = "SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id WHERE 1=1";
 
-// Check if an ID filter is passed in the URL
+
 if (isset($_GET['id'])) {
     $post_id = $_GET['id'];
-    // Add condition to filter by post_id
+
     $sql .= " AND p.id = ?";
-    // Prepare the statement
+
     $statement = mysqli_prepare($connection, $sql);
-    // Bind the post_id filter parameter to the prepared statement
+
     mysqli_stmt_bind_param($statement, "i", $post_id);
 } else if (isset($_GET['user_id'])) {
-    // If a user_id filter is provided, fetch posts belonging to that user
+
     $user_id = $_GET['user_id'];
     $sql .= " AND p.user_id = ?";
     $statement = mysqli_prepare($connection, $sql);
@@ -46,7 +46,7 @@ if (isset($_GET['id'])) {
     $statement = mysqli_prepare($connection, $sql);
 }
 
-// Execute the statement
+
 mysqli_stmt_execute($statement);
 
 // Get the result set
@@ -54,13 +54,13 @@ $result = mysqli_stmt_get_result($statement);
 
 if ($result) {
     $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    // Free the memory associated with the result
+
     mysqli_free_result($result);
 } else {
     echo "Error fetching posts: " . mysqli_error($connection);
 }
 
-// Close the prepared statement
+
 mysqli_stmt_close($statement);
 
 // Check if the 'avatar' key is set in the $user array
@@ -150,7 +150,6 @@ session_write_close();
 </html>
 <?php
 
-// Close the connection
 if ($connection) {
     mysqli_close($connection);
 }
