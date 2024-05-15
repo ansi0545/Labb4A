@@ -18,17 +18,17 @@ include 'info.php';
 // Prepare the SQL query to fetch posts
 $sql = "SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id ";
 
-// Check if a category filter is passed in the URL
-if (isset($_GET['filter'])) {
-    $filter = $_GET['filter'];
-    // Modify the SQL query to filter by category
-    $sql .= "WHERE c.name = ? ORDER BY p.id DESC";
+// Check if a user_id filter is passed in the URL
+if (isset($_GET['user_id'])) {
+    $user_id = $_GET['user_id'];
+    // Modify the SQL query to filter by user_id
+    $sql .= "WHERE p.user_id = ? ORDER BY p.id DESC";
     // Prepare the statement
     $statement = mysqli_prepare($connection, $sql);
-    // Bind the category filter parameter to the prepared statement
-    mysqli_stmt_bind_param($statement, "s", $filter);
+    // Bind the user_id filter parameter to the prepared statement
+    mysqli_stmt_bind_param($statement, "i", $user_id);
 } else {
-    // If no category filter is provided, fetch all posts
+    // If no user_id filter is provided, fetch all posts
     $sql .= "ORDER BY p.id DESC";
     $statement = mysqli_prepare($connection, $sql);
 }
@@ -54,7 +54,6 @@ mysqli_stmt_close($statement);
 $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
 
 session_write_close();
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -100,27 +99,31 @@ session_write_close();
             </aside>
 
             <section class="blog-container">
-                <ul class="blog-list">
-                    <?php foreach ($posts as $post) : ?>
-                        <li class="blogPosts">
-                            <div class="post">
-                                <h2><?php echo htmlspecialchars($post['title']); ?></h2>
-                                <p><?php echo htmlspecialchars($post['content']); ?></p>
+                <?php if (empty($posts)) : ?>
+                    <p>No posts found.</p>
+                <?php else : ?>
+                    <ul class="blog-list">
+                        <?php foreach ($posts as $post) : ?>
+                            <li class="blogPosts">
+                                <div class="post">
+                                    <h2><?php echo htmlspecialchars($post['title']); ?></h2>
+                                    <p><?php echo htmlspecialchars($post['content']); ?></p>
 
-                                <p>Category: <?php echo htmlspecialchars($post['category_name']); ?></p>
-                                <?php if (!empty($post['image_path'])) : ?>
-                                    <img src="<?php echo htmlspecialchars($post['image_path']); ?>" alt="Blog Image">
-                                <?php endif; ?>
-                                <?php // If the logged-in user is the author of the post, display the "Edit" and "Delete" buttons
-                                if ($post['user_id'] == $loggedInUserId) {
-                                    echo '<a href="edit_post.php?id=' . $post['id'] . '">Edit</a>';
-                                    echo '<a href="delete_post.php?id=' . $post['id'] . '" onclick="return confirm(\'Are you sure you want to delete this post?\')">Delete</a>';
-                                }
-                                ?>
-                            </div>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
+                                    <p>Category: <?php echo htmlspecialchars($post['category_name']); ?></p>
+                                    <?php if (!empty($post['image_path'])) : ?>
+                                        <img src="<?php echo htmlspecialchars($post['image_path']); ?>" alt="Blog Image">
+                                    <?php endif; ?>
+                                    <?php // If the logged-in user is the author of the post, display the "Edit" and "Delete" buttons
+                                    if ($post['user_id'] == $loggedInUserId) {
+                                        echo '<a href="edit_post.php?id=' . $post['id'] . '">Edit</a>';
+                                        echo '<a href="delete_post.php?id=' . $post['id'] . '" onclick="return confirm(\'Are you sure you want to delete this post?\')">Delete</a>';
+                                    }
+                                    ?>
+                                </div>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
                 <a href="create_post.php">Create post</a>
                 <a href="dashboard.php">Dashboard</a>
                 <?php include 'footer.php'; ?>
