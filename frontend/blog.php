@@ -1,35 +1,35 @@
 <?php
 session_start();
 require_once(__DIR__ . '/../backend/db.php');
-
-$loggedInUserId = $_SESSION['user_id'];
+$loggedInUserId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
+
 include 'content.php';
 include 'menu.php';
 include 'info.php';
 
 
-if ($filter) {
-    if ($filter === 'Allt om hundar') {
-        // Execute the query to fetch all posts without filtering by category
-        $result = mysqli_query($connection, 'SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id ORDER BY p.id DESC');
-    } else {
-        // Prepare the SQL statement with a placeholder for the category name
-        $stmt = $connection->prepare("SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id WHERE c.name = ? ORDER BY p.id DESC");
-        // Bind the $filter variable to the placeholder in the prepared statement
-        $stmt->bind_param("s", $filter);
-        // Execute the prepared statement
-        $stmt->execute();
-        // Get the result of the query
-        $result = $stmt->get_result();
-    }
-} else {
+// Check if a post's ID is passed in the URL
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    // Modify the SQL query to fetch the post with the ID $id
+    $result = mysqli_query($connection, "SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id WHERE p.id = $id");
+}
+// Check if a blogger's ID is passed in the URL
+else if (isset($_GET['user_id'])) {
+    $user_id = $_GET['user_id'];
+
+    //SQL query to fetch posts from the blogger with the ID $user_id
+    $result = mysqli_query($connection, "SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id WHERE p.user_id = $user_id ORDER BY p.id DESC");
+}
+else {
     // Execute the default query to fetch all posts
     $result = mysqli_query($connection, 'SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id ORDER BY p.id DESC');
 }
+
 
 if ($result) {
     $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -40,30 +40,10 @@ if ($result) {
 }
 
 
-
-
-
-
-
-if (!isset($_SESSION['user_id'])) {
-    // Redirect to the login page if not logged in
-    header("Location: login.php");
-    exit;
-}
-
-
-// If the user does not exist, you can display an error message and log them out
-if (!$user) {
-    // Display an error message and log out the user
-    session_destroy();
-    header("Location: login.php");
-    exit;
-}
-
 // Check if the 'avatar' key is set in the $user array
 $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
 
-// Close the session
+
 session_write_close();
 
 

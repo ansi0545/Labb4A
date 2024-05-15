@@ -3,6 +3,9 @@ session_start();
 require_once(__DIR__ . '/backend/db.php');
 
 include 'frontend/menu.php';
+include 'frontend/content.php';
+include 'frontend/menu.php';
+include 'frontend/info.php';
 
 // Fetch latest posts and newest blogger
 $latest_posts = get_latest_posts();
@@ -30,8 +33,9 @@ if (isset($_POST['submit'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap" rel="stylesheet">
@@ -39,37 +43,29 @@ if (isset($_POST['submit'])) {
     <title>Welcome</title>
     <link rel="stylesheet" href="frontend/style.css">
 </head>
+
 <body>
     <div class="login-container">
-        <h2>Welcome</h2>
+        <h2>Welcome to vovvebloggen!</h2>
         <h3>Latest Posts</h3>
-        <?php foreach($latest_posts as $post): ?>
-            <a href="frontend/post.php?id=<?php echo $post['id']; ?>"><?php echo $post['title']; ?></a>
+        <?php foreach ($latest_posts as $post) : ?>
+            <a href="/frontend/blog.php?id=<?php echo $post['id']; ?>"><?php echo $post['title']; ?></a>
         <?php endforeach; ?>
         <h3>Newest Blogger</h3>
-        <a href="frontend/blogger.php?id=<?php echo $newest_blogger['id']; ?>"><?php echo $newest_blogger['username']; ?></a>
+        <?php if (isset($newest_blogger['id'])) : ?>
+            <a href="/frontend/blog.php?user_id=<?php echo $newest_blogger['id']; ?>"><?php echo $newest_blogger['username']; ?></a>
+        <?php endif; ?>
+
         <h3>Bloggers</h3>
-        <?php foreach($bloggers as $blogger): ?>
-            <a href="frontend/blogger.php?id=<?php echo $blogger['id']; ?>"><?php echo $blogger['username']; ?></a>
+        <?php foreach ($bloggers as $blogger) : ?>
+            <?php if (isset($blogger['id'])) : ?>
+                <a href="/frontend/blog.php?user_id=<?php echo $blogger['id']; ?>"><?php echo $blogger['username']; ?></a>
+            <?php endif; ?>
         <?php endforeach; ?>
+
         <?php if (isset($login_error)) echo "<p class='error'>$login_error</p>"; ?>
-        <form action="index.php" method="post">
-            <div class="input-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <div class="input-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="input-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <div class="input-group">
-                <button type="submit" name="submit">Login</button>
-            </div>
-        </form>
+        <p> <a href="/login.php">Login here</a></p>
+        <p>Don't have an account? <a href="frontend/register.php">Register here</a></p>
     </div>
 </body>
 
