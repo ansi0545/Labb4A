@@ -4,8 +4,8 @@ require_once(__DIR__ . '/backend/db.php');
 
 include 'frontend/menu.php';
 include 'frontend/content.php';
-include 'frontend/menu.php';
 include 'frontend/info.php';
+
 
 // Fetch latest posts and newest blogger
 $latest_posts = get_latest_posts();
@@ -66,7 +66,9 @@ if (isset($_POST['submit'])) {
         <?php if (isset($login_error)) echo "<p class='error'>$login_error</p>"; ?>
         <p> <a href="/login.php">Login here</a></p>
         <p>Don't have an account? <a href="frontend/register.php">Register here</a></p>
+        <?php include 'frontend/footer.php'; ?>
     </div>
+   
 </body>
 
 </html>

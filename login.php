@@ -58,7 +58,9 @@ if (isset($_POST['submit'])) {
             </div>
         </form>
         <p>Don't have an account? <a href="frontend/register.php">Register here</a></p>
+        <?php include 'frontend/footer.php'; ?>
     </div>
+   
 </body>
 
 </html>

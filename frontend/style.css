@@ -37,7 +37,7 @@ h2 {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  max-width: 500px;
+  max-width: 100%;
   margin: 0 auto;
   background-color: #44403c;
   padding: 2rem;
@@ -265,10 +265,27 @@ button[type="submit"]:hover {
   gap: 48px;
 }
 
+ .footer-container {
+  display: block;
+  clear: both;
+  font-size: 0.5rem;
+  text-align: center;
+} 
+
+/* .footer-container {
+  display: flex;
+  text-align: center;
+} */
+
+.footer-links {
+  display: flex;
+
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
 @media (max-width: 900px) {
-  .main {
-    grid-template-columns: 1fr;
-  }
 }
 
 h1 {
@@ -283,43 +300,15 @@ h1 {
   margin-bottom: 16px;
 }
 
-.fact {
-  font-size: 20px;
-  line-height: 1.4;
-  background-color: #44403c;
-  margin-bottom: 16px;
-  padding: 16px 24px;
-  letter-spacing: -1px;
-  border-radius: 16px;
-
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
 @media (max-width: 1200px) {
   .post {
     flex-direction: column;
-    align-items: flex-end;
-    gap: 12px;
+    gap: 1rem;
   }
 }
 
 ul {
   list-style: none;
-}
-
-.source:link,
-.source:visited {
-  color: #a8a29e;
-  text-decoration: none;
-  margin-left: 12px;
-  transition: 0.3s;
-}
-
-.source:hover,
-.source:active {
-  color: #3b82f6;
 }
 
 .btn {
