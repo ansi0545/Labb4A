@@ -18,17 +18,23 @@ include 'info.php';
 // Prepare the SQL query to fetch posts
 $sql = "SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id ";
 
-// Check if a user_id filter is passed in the URL
-if (isset($_GET['user_id'])) {
-    $user_id = $_GET['user_id'];
-    // Modify the SQL query to filter by user_id
-    $sql .= "WHERE p.user_id = ? ORDER BY p.id DESC";
+// Check if an ID filter is passed in the URL
+if (isset($_GET['id'])) {
+    $post_id = $_GET['id'];
+    // Modify the SQL query to filter by post_id
+    $sql .= "WHERE p.id = ? ORDER BY p.id DESC";
     // Prepare the statement
     $statement = mysqli_prepare($connection, $sql);
-    // Bind the user_id filter parameter to the prepared statement
-    mysqli_stmt_bind_param($statement, "i", $user_id);
+    // Bind the post_id filter parameter to the prepared statement
+    mysqli_stmt_bind_param($statement, "i", $post_id);
+} else if (isset($_GET['category_id'])) {
+    // If a category_id filter is provided, fetch posts belonging to that category
+    $category_id = $_GET['category_id'];
+    $sql .= "WHERE p.category_id = ? ORDER BY p.id DESC";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, "i", $category_id);
 } else {
-    // If no user_id filter is provided, fetch all posts
+    // If no ID or category_id filter is provided, fetch all posts
     $sql .= "ORDER BY p.id DESC";
     $statement = mysqli_prepare($connection, $sql);
 }
@@ -92,7 +98,7 @@ session_write_close();
                     });
                     foreach ($categories as $category) {
                         $style = $category['name'] === 'Allt om hundar' ? 'background-image: ' . $categoryColors[$category['name']] : 'background-color: ' . ($categoryColors[$category['name']] ?? '#000');
-                        echo '<li class="category"><a href="?filter=' . urlencode($category['name']) . '" class="btn btn-category" style="' . htmlspecialchars($style) . '">' . htmlspecialchars($category['name']) . '</a></li>';
+                        echo '<li class="category"><a href="?category_id=' . $category['id'] . '" class="btn btn-category" style="' . htmlspecialchars($style) . '">' . htmlspecialchars($category['name']) . '</a></li>';
                     }
                     ?>
                 </ul>

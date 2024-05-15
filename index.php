@@ -35,13 +35,12 @@ if (isset($_POST['submit'])) {
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome</title>
     <link rel="stylesheet" href="frontend/style.css">
+    <title>Welcome</title>
 </head>
 
 <body>
@@ -49,6 +48,7 @@ if (isset($_POST['submit'])) {
         <h2>Welcome to vovvebloggen!</h2>
         <h3>Latest Posts</h3>
         <?php foreach ($latest_posts as $post) : ?>
+            <!-- Ändra länkarna för att inkludera ID:et för varje inlägg -->
             <a href="/frontend/blog.php?id=<?php echo $post['id']; ?>"><?php echo $post['title']; ?></a>
         <?php endforeach; ?>
         <h3>Newest Blogger</h3>
