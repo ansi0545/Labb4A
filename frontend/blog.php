@@ -16,26 +16,33 @@ include 'menu.php';
 include 'info.php';
 
 // Prepare the SQL query to fetch posts
-$sql = "SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id ";
+// Prepare the SQL query to fetch posts
+$sql = "SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id WHERE 1=1";
 
 // Check if an ID filter is passed in the URL
 if (isset($_GET['id'])) {
     $post_id = $_GET['id'];
-    // Modify the SQL query to filter by post_id
-    $sql .= "WHERE p.id = ? ORDER BY p.id DESC";
+    // Add condition to filter by post_id
+    $sql .= " AND p.id = ?";
     // Prepare the statement
     $statement = mysqli_prepare($connection, $sql);
     // Bind the post_id filter parameter to the prepared statement
     mysqli_stmt_bind_param($statement, "i", $post_id);
+} else if (isset($_GET['user_id'])) {
+    // If a user_id filter is provided, fetch posts belonging to that user
+    $user_id = $_GET['user_id'];
+    $sql .= " AND p.user_id = ?";
+    $statement = mysqli_prepare($connection, $sql);
+    mysqli_stmt_bind_param($statement, "i", $user_id);
 } else if (isset($_GET['category_id'])) {
     // If a category_id filter is provided, fetch posts belonging to that category
     $category_id = $_GET['category_id'];
-    $sql .= "WHERE p.category_id = ? ORDER BY p.id DESC";
+    $sql .= " AND p.category_id = ?";
     $statement = mysqli_prepare($connection, $sql);
     mysqli_stmt_bind_param($statement, "i", $category_id);
 } else {
-    // If no ID or category_id filter is provided, fetch all posts
-    $sql .= "ORDER BY p.id DESC";
+    // If no specific filter is provided, fetch all posts
+    $sql .= " ORDER BY p.id DESC";
     $statement = mysqli_prepare($connection, $sql);
 }
 

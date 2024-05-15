@@ -54,6 +54,7 @@ if (isset($_POST['submit'])) {
         <h3>Newest Blogger</h3>
         <?php if (isset($newest_blogger['id'])) : ?>
             <a href="/frontend/blog.php?user_id=<?php echo $newest_blogger['id']; ?>"><?php echo $newest_blogger['username']; ?></a>
+            
         <?php endif; ?>
 
         <h3>Bloggers</h3>
