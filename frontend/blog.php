@@ -1,35 +1,43 @@
 <?php
 session_start();
-require_once(__DIR__ . '/../backend/db.php');
-$loggedInUserId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
+// Include the database connection file
+require_once(__DIR__ . '/../backend/db.php');
+
+// Check if the database connection is successful
 if (!$connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
+
+$loggedInUserId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 
 include 'content.php';
 include 'menu.php';
 include 'info.php';
 
+// Prepare the SQL query to fetch posts
+$sql = "SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id ";
 
-// Check if a post's ID is passed in the URL
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    // Modify the SQL query to fetch the post with the ID $id
-    $result = mysqli_query($connection, "SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id WHERE p.id = $id");
-}
-// Check if a blogger's ID is passed in the URL
-else if (isset($_GET['user_id'])) {
-    $user_id = $_GET['user_id'];
-
-    //SQL query to fetch posts from the blogger with the ID $user_id
-    $result = mysqli_query($connection, "SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id WHERE p.user_id = $user_id ORDER BY p.id DESC");
-}
-else {
-    // Execute the default query to fetch all posts
-    $result = mysqli_query($connection, 'SELECT p.*, c.name AS category_name FROM post p LEFT JOIN categories c ON p.category_id = c.id ORDER BY p.id DESC');
+// Check if a category filter is passed in the URL
+if (isset($_GET['filter'])) {
+    $filter = $_GET['filter'];
+    // Modify the SQL query to filter by category
+    $sql .= "WHERE c.name = ? ORDER BY p.id DESC";
+    // Prepare the statement
+    $statement = mysqli_prepare($connection, $sql);
+    // Bind the category filter parameter to the prepared statement
+    mysqli_stmt_bind_param($statement, "s", $filter);
+} else {
+    // If no category filter is provided, fetch all posts
+    $sql .= "ORDER BY p.id DESC";
+    $statement = mysqli_prepare($connection, $sql);
 }
 
+// Execute the statement
+mysqli_stmt_execute($statement);
+
+// Get the result set
+$result = mysqli_stmt_get_result($statement);
 
 if ($result) {
     $posts = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -39,13 +47,13 @@ if ($result) {
     echo "Error fetching posts: " . mysqli_error($connection);
 }
 
+// Close the prepared statement
+mysqli_stmt_close($statement);
 
 // Check if the 'avatar' key is set in the $user array
 $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
 
-
 session_write_close();
-
 
 ?>
 <!DOCTYPE html>
@@ -73,6 +81,16 @@ session_write_close();
                 <ul>
                     <!-- Dynamically load categories -->
                     <?php
+                    // Sort categories so that 'Allt om hundar' is always at the top
+                    usort($categories, function ($a, $b) {
+                        if ($a['name'] === 'Allt om hundar') {
+                            return -1;
+                        }
+                        if ($b['name'] === 'Allt om hundar') {
+                            return 1;
+                        }
+                        return strcmp($a['name'], $b['name']);
+                    });
                     foreach ($categories as $category) {
                         $style = $category['name'] === 'Allt om hundar' ? 'background-image: ' . $categoryColors[$category['name']] : 'background-color: ' . ($categoryColors[$category['name']] ?? '#000');
                         echo '<li class="category"><a href="?filter=' . urlencode($category['name']) . '" class="btn btn-category" style="' . htmlspecialchars($style) . '">' . htmlspecialchars($category['name']) . '</a></li>';
@@ -81,7 +99,7 @@ session_write_close();
                 </ul>
             </aside>
 
-            <section>
+            <section class="blog-container">
                 <ul class="blog-list">
                     <?php foreach ($posts as $post) : ?>
                         <li class="blogPosts">
@@ -105,6 +123,7 @@ session_write_close();
                 </ul>
                 <a href="create_post.php">Create post</a>
                 <a href="dashboard.php">Dashboard</a>
+                <?php include 'footer.php'; ?>
             </section>
 
         </main>

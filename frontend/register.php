@@ -32,14 +32,14 @@ if (isset($_POST['submit'])) {
 
 <body>
     <div class="register-container">
-        
+
         <?php
         if (isset($register_error)) {
             echo "<p class='error'>$register_error</p>";
         }
         ?>
         <form action="register.php" method="post">
-        <h1>Register</h1>
+            <h1>Register</h1>
             <div class="input-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
@@ -55,8 +55,11 @@ if (isset($_POST['submit'])) {
             <div class="input-group">
                 <button type="submit" name="submit">Register</button>
             </div>
+            <p>Already have an account? <a href="/login.php">Login here</a></p>
+            <?php include 'footer.php'; ?>
         </form>
-        <p>Already have an account? <a href="/login.php">Login here</a></p>
+
+
     </div>
 </body>
 

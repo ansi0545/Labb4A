@@ -80,8 +80,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 <button type="submit" name="submit">Update Profile</button>
             </div>
             <a href="dashboard.php">Dashboard</a>
+            <?php include 'footer.php'; ?>
     </div>
+
     </form>
+
     </div>
 </body>
 

@@ -97,55 +97,38 @@ function upload_profile_picture($user_id, $avatar)
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-    // Check if image file is a actual image or fake image
-    if (isset($_POST["submit"])) {
-        $check = getimagesize($avatar["tmp_name"]);
-        if ($check !== false) {
-            echo "File is an image - " . $check["mime"] . ".";
-            $uploadOk = 1;
-        } else {
-            echo "File is not an image.";
-            $uploadOk = 0;
-        }
-    }
-
-    // Check if file already exists
-    if (file_exists($target_file)) {
-        echo "Sorry, file already exists.";
+    // Validera filens MIME-typ och storlek
+    $allowed_types = array('jpg', 'jpeg', 'png', 'gif');
+    if (!in_array($imageFileType, $allowed_types)) {
+        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
         $uploadOk = 0;
     }
 
-    // Check file size
     if ($avatar["size"] > 500000) {
         echo "Sorry, your file is too large.";
         $uploadOk = 0;
     }
 
-    // Allow certain file formats
-    if (
-        $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-        && $imageFileType != "gif"
-    ) {
-        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-        $uploadOk = 0;
-    }
+    // Säker uppladdning: Sanera filnamnet för att förhindra skadlig kodinjektion
+    $target_file = $target_dir . basename($avatar["name"]);
+    $target_file = preg_replace("/[^a-zA-Z0-9\-_.]/", '', $target_file);
 
     // Check if $uploadOk is set to 0 by an error
     if ($uploadOk == 0) {
         echo "Sorry, your file was not uploaded.";
-        // if everything is ok, try to upload file
     } else {
         if (move_uploaded_file($avatar["tmp_name"], $target_file)) {
 
-            $sql = "UPDATE user SET avatar = ? WHERE id = ?";
-            $stmt = $connection->prepare($sql);
-            $stmt->bind_param("si", $target_file, $user_id);
-            $stmt->execute();
+            $avatar_path = $target_file; // Save the path of the uploaded file
+
+            // Update the user's avatar in the database
+            change_avatar($avatar_path, $user_id);
         } else {
             echo "Sorry, there was an error uploading your file.";
         }
     }
 }
+
 
 
 function request_password_reset($email)

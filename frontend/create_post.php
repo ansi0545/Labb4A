@@ -103,6 +103,7 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Create post</title>
 
 </head>
 
@@ -142,6 +143,7 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
 
         <button type="submit">Create post</button>
         <a href="dashboard.php">Dashboard</a>
+        <?php include 'footer.php'; ?>
     </form>
 </body>
 
