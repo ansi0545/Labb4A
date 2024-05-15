@@ -10,7 +10,7 @@ if (isset($_SESSION['user_id'])) {
 
     // Check if the key 0 exists in the $user array
     if (isset($user[0])) {
-        $user = $user[0]; // Get the first user from the array
+        $user = $user[0];
     }
-    // Rest of the code to fetch and display user info
+    
 }

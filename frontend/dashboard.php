@@ -43,7 +43,7 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Coiny&family=Sono:wght@200..800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <!-- Display the user's avatar -->
+
 
 </head>
 

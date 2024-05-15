@@ -2,13 +2,13 @@
 session_start();
 
 
-// Kontrollera om användaren är inloggad
+
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
 
-// Inkludera din databasanslutningsfil här
+
 require_once(__DIR__ . '/../backend/db.php');
 include 'menu.php';
 
@@ -19,34 +19,33 @@ $category_id = 0; // Lägg till detta
 
 
 
-// Kontrollera om formuläret har skickats
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $content = $_POST['content'];
     $category_id = $_POST['category']; // Hämta vald kategori
 
-    // Validera titel
+
     if (empty($title)) {
         $errors[] = 'Titel är obligatorisk';
     }
 
-    // Validera innehåll
+
     if (empty($content)) {
         $errors[] = 'Innehåll är obligatoriskt';
     }
 
     $image_path = '';
-    // Hantera filuppladdning om en fil har laddats upp
+
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
         $target_dir = 'uploads/';
         $target_file = $target_dir . basename($_FILES['image']['name']);
 
-        // Kontrollera om katalogen finns, om inte, skapa den
+
         if (!file_exists($target_dir)) {
             mkdir($target_dir, 0777, true);
         }
 
-        // Flytta den uppladdade filen
         if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
             echo 'Filen ' . basename($_FILES['image']['name']) . ' har laddats upp.';
             $image_path = $target_file; // This is the path of the uploaded file
@@ -55,9 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Kontrollera om det inte finns några fel
+
     if (empty($errors)) {
-        // Infoga inlägg i databasen inklusive kategori
+
         $sql = 'INSERT INTO post (title, content, user_id, category_id, image_path) VALUES (?, ?, ?, ?, ?)';
         $stmt = mysqli_prepare($connection, $sql);
         mysqli_stmt_bind_param($stmt, 'ssiis', $title, $content, $_SESSION['user_id'], $category_id, $image_path);
@@ -66,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-        // Omdirigera till bloggsidan
+
         header('Location: blog.php');
         exit();
     }
@@ -110,7 +109,7 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
 <body>
 
 
-    <!-- Visa felmeddelanden -->
+
     <?php if (!empty($errors)) : ?>
         <div class="errors">
             <?php foreach ($errors as $error) : ?>
@@ -119,7 +118,7 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
         </div>
     <?php endif; ?>
 
-    <!-- Inläggsformulär -->
+
     <form method="POST" enctype="multipart/form-data">
         <header>
             <img class="avatar" src="<?php echo isset($avatar_path) ? htmlspecialchars($avatar_path) : 'http://localhost/Labb4A/frontend/uploads/' . (isset($user['avatar']) ? $user['avatar'] : ''); ?>" alt="Avatar">

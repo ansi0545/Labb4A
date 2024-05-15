@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Update the post
+
     $stmt = $connection->prepare("UPDATE post SET title = ?, content = ?, image_path = ?, category_id = ? WHERE id = ?");
     $stmt->bind_param("ssssi", $title, $content, $image_path, $category_id, $post_id);
     $stmt->execute();

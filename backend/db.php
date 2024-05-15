@@ -97,7 +97,7 @@ function upload_profile_picture($user_id, $avatar)
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-    // Validera filens MIME-typ och storlek
+
     $allowed_types = array('jpg', 'jpeg', 'png', 'gif');
     if (!in_array($imageFileType, $allowed_types)) {
         echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
@@ -109,7 +109,7 @@ function upload_profile_picture($user_id, $avatar)
         $uploadOk = 0;
     }
 
-    // Säker uppladdning: Sanera filnamnet för att förhindra skadlig kodinjektion
+
     $target_file = $target_dir . basename($avatar["name"]);
     $target_file = preg_replace("/[^a-zA-Z0-9\-_.]/", '', $target_file);
 
@@ -140,7 +140,7 @@ function request_password_reset($email)
     mysqli_stmt_bind_param($statement, "ss", $reset_code, $email);
     mysqli_stmt_execute($statement);
     mysqli_stmt_close($statement);
-    // TODO: Send the reset code to the user's email address
+
 }
 
 function get_post_by_id($post_id)
@@ -203,7 +203,7 @@ function reset_password($email, $reset_code, $new_password)
         $user_id = $user['id'];
         update_user_profile($user_id, $user['username'], $new_password);
     } else {
-        // TODO: Handle the error case where the reset code is incorrect
+
     }
 }
 function get_result($statement)

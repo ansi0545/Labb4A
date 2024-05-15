@@ -1,8 +1,8 @@
 <?php
-// menu.php
+
 $categories = [];
 $categorySql = 'SELECT * FROM categories ORDER BY id ASC';
-// Rest of the code to fetch and display categories
+
 
 $categoryResult = mysqli_query($connection, $categorySql);
 if ($categoryResult) {
@@ -12,7 +12,7 @@ if ($categoryResult) {
     echo "Error fetching categories: " . mysqli_error($connection);
 }
 
-// Hämta kategorier för dropdown
+
 $categorySql = 'SELECT * FROM categories ORDER BY name ASC';
 $categoryResult = mysqli_query($connection, $categorySql);
 $categories = mysqli_fetch_all($categoryResult, MYSQLI_ASSOC);

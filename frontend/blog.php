@@ -49,7 +49,7 @@ if (isset($_GET['id'])) {
 
 mysqli_stmt_execute($statement);
 
-// Get the result set
+
 $result = mysqli_stmt_get_result($statement);
 
 if ($result) {
@@ -68,6 +68,7 @@ $avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
 
 session_write_close();
 ?>
+
 <!DOCTYPE html>
 <html>
 
