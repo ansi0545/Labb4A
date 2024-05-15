@@ -130,8 +130,9 @@ session_write_close();
                         <?php endforeach; ?>
                     </ul>
                 <?php endif; ?>
-                <a href="create_post.php">Create post</a>
-                <a href="dashboard.php">Dashboard</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'dashboard.php' : '/login.php'; ?>">Dashboard</a>
+                <a href="<?php echo isset($_SESSION['user_id']) ? 'create_post.php' : '/login.php'; ?>">Create post</a>
+
                 <?php include 'footer.php'; ?>
             </section>
 
