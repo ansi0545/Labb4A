@@ -85,13 +85,14 @@ session_write_close();
 </head>
 
 <body>
-    <section class="blogposts-container">
-        <header class="header">
-            <img class="avatar" src="<?php echo isset($avatar_path) ? htmlspecialchars($avatar_path) : 'http://localhost/Labb4A/frontend/uploads/' . (isset($user['avatar']) ? $user['avatar'] : ''); ?>" alt="Avatar">
-            <h1>Vovvebloggen</h1>
-        </header>
+   <div class="blogposts-container">
+        
+            <header class="header">
+                <img class="avatar" src="<?php echo isset($avatar_path) ? htmlspecialchars($avatar_path) : 'http://localhost/Labb4A/frontend/uploads/' . (isset($user['avatar']) ? $user['avatar'] : ''); ?>" alt="Avatar">
+                <h1>Vovvebloggen</h1>
+            </header>
 
-        <main class="main">
+            <main class="main">
             <aside>
                 <ul>
                     <!-- Dynamically load categories -->
@@ -114,13 +115,13 @@ session_write_close();
                 </ul>
             </aside>
 
-            <section class="blog-container">
+            <section class="blogPosts">
                 <?php if (empty($posts)) : ?>
                     <p>No posts found.</p>
                 <?php else : ?>
                     <ul class="blog-list">
                         <?php foreach ($posts as $post) : ?>
-                            <li class="blogPosts">
+                            <li class="">
                                 <div class="post">
                                     <h2><?php echo htmlspecialchars($post['title']); ?></h2>
                                     <p><?php echo htmlspecialchars($post['content']); ?></p>
@@ -144,10 +145,11 @@ session_write_close();
                 <a href="<?php echo isset($_SESSION['user_id']) ? 'create_post.php' : '/login.php'; ?>">Create post</a>
 
                 <?php include 'footer.php'; ?>
-            </section>
+           
 
-        </main>
-    </section>
+        </section>
+    </main>
+    </div> <!--end of blog-container -->
 </body>
 
 </html>
