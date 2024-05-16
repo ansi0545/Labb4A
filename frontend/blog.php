@@ -64,7 +64,9 @@ if ($result) {
 mysqli_stmt_close($statement);
 
 // Check if the 'avatar' key is set in the $user array
-$avatar_path = isset($user['avatar']) ? $user['avatar'] : '';
+
+$avatar_path = isset($user['avatar']) ? htmlspecialchars($user['avatar']) : '';
+
 
 session_write_close();
 ?>

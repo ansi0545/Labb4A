@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
             echo 'Filen ' . basename($_FILES['image']['name']) . ' har laddats upp.';
-            $image_path = $target_file; // This is the path of the uploaded file
+            $image_path = htmlspecialchars($target_file);
         } else {
             echo 'Tyvärr, det blev ett fel vid uppladdningen av din fil.';
         }
