@@ -27,3 +27,4 @@ $categoryColors = [
     'Rallylydnad' => '#14b8a6',
 ];
 
+?>

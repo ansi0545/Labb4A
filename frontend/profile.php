@@ -81,9 +81,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
             </div>
             <a href="dashboard.php">Dashboard</a>
             <?php include 'footer.php'; ?>
-    </div>
 
-    </form>
+
+        </form>
 
     </div>
 </body>

@@ -8,7 +8,7 @@ require_once(__DIR__ . '/../backend/db.php');
 
 // Check if the user is logged in, otherwise redirect to the login page
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: /login.php");
     exit;
 }
 
