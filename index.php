@@ -7,7 +7,7 @@ include 'frontend/content.php';
 include 'frontend/info.php';
 
 
-// Fetch latest posts and newest blogger
+
 $latest_posts = get_latest_posts();
 $newest_blogger = get_newest_blogger();
 $bloggers = get_all_bloggers();
@@ -48,7 +48,7 @@ if (isset($_POST['submit'])) {
         <h2>Welcome to vovvebloggen!</h2>
         <h3>Latest Posts</h3>
         <?php foreach ($latest_posts as $post) : ?>
-            <!-- Ändra länkarna för att inkludera ID:et för varje inlägg -->
+
             <a href="/frontend/blog.php?id=<?php echo $post['id']; ?>"><?php echo $post['title']; ?></a>
         <?php endforeach; ?>
         <h3>Newest Blogger</h3>
